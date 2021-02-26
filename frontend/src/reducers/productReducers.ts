@@ -1,13 +1,9 @@
-import { ActionTypes } from "../actions/types";
-import { ProductType, Reviews } from "../types/ProductType";
 import {
-  FetchProductsRequestAction,
-  FetchProductsSuccessAction,
-  FetchProductsFailAction,
-  FetchProductDetailsRequestAction,
-  FetchProductDetailsSuccessAction,
-  FetchProductDetailsFailAction,
-} from "../actions/productActions";
+  ActionTypes,
+  ProductDetailAction,
+  ProductListAction,
+} from "../actions";
+import { ProductType, Reviews } from "../types/ProductType";
 
 export interface ProductListState {
   loading: Boolean;
@@ -23,10 +19,7 @@ export interface ProductDetailState {
 
 export const productListReducer = (
   state: ProductListState = { loading: false, products: [] },
-  action:
-    | FetchProductsRequestAction
-    | FetchProductsSuccessAction
-    | FetchProductsFailAction
+  action: ProductListAction
 ): ProductListState => {
   switch (action.type) {
     case ActionTypes.PRODUCT_LIST_REQUEST:
@@ -45,10 +38,7 @@ export const productDetailsReducer = (
     loading: false,
     product: { reviews: [] as Reviews[] } as ProductType,
   },
-  action:
-    | FetchProductDetailsRequestAction
-    | FetchProductDetailsSuccessAction
-    | FetchProductDetailsFailAction
+  action: ProductDetailAction
 ): ProductDetailState => {
   switch (action.type) {
     case ActionTypes.PRODUCT_DETAILS_REQUEST:
