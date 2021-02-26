@@ -1,3 +1,9 @@
+export interface Reviews {
+  name: string;
+  rating: number;
+  comment: string;
+}
+
 export interface ProductType {
   _id: string;
   name: string;
@@ -9,4 +15,5 @@ export interface ProductType {
   countInStock: number;
   rating: number;
   numReviews: number;
+  reviews: Reviews[];
 }
