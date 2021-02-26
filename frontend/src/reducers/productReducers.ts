@@ -8,7 +8,7 @@ import {
 
 export interface ProductState {
   loading: Boolean;
-  products?: ProductType[];
+  products: ProductType[];
   error?: string;
 }
 
@@ -25,7 +25,7 @@ export const productListReducer = (
     case ActionTypes.PRODUCT_LIST_SUCCESS:
       return { loading: false, products: action.payload };
     case ActionTypes.PRODUCT_LIST_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, products: [], error: action.payload };
     default:
       return state;
   }
