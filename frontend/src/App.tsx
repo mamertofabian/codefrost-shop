@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 
-const App = () => {
+const App = (): JSX.Element => {
   return (
     <Router>
       <Header />
