@@ -25,7 +25,7 @@ const ProductScreen = ({
   history,
   match,
 }: RouteComponentProps<MatchParams>) => {
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
 
@@ -51,7 +51,9 @@ const ProductScreen = ({
         {loading ? (
           <Loader />
         ) : error ? (
-          <Message variant="danger">{error}</Message>
+          <Message variant="danger">
+            <span>{error}</span>
+          </Message>
         ) : (
           <Row>
             <Col md={6}>

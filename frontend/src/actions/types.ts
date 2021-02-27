@@ -1,3 +1,4 @@
+import { CartAddAction, CartRemoveAction } from "./cartActions";
 import {
   FetchProductsRequestAction,
   FetchProductsSuccessAction,
@@ -14,6 +15,8 @@ export enum ActionTypes {
   PRODUCT_DETAILS_REQUEST = "PRODUCT_DETAILS_REQUEST",
   PRODUCT_DETAILS_SUCCESS = "PRODUCT_DETAILS_SUCCESS",
   PRODUCT_DETAILS_FAIL = "PRODUCT_DETAILS_FAIL",
+  CART_ADD_ITEM = "CART_ADD_ITEM",
+  CART_REMOVE_ITEM = "CART_REMOVE_ITEM",
 }
 
 export type ProductListAction =
@@ -25,3 +28,5 @@ export type ProductDetailAction =
   | FetchProductDetailsRequestAction
   | FetchProductDetailsSuccessAction
   | FetchProductDetailsFailAction;
+
+export type CartAction = CartAddAction | CartRemoveAction;
