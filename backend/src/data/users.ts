@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import { IUser } from "../models/userModel";
 
 const users = [
   {
@@ -11,11 +12,13 @@ const users = [
     name: "John Doe",
     email: "john@example.com",
     password: bcrypt.hashSync("123456", 10),
+    isAdmin: false,
   },
   {
     name: "Jane Doe",
     email: "jane@example.com",
     password: bcrypt.hashSync("123456", 10),
+    isAdmin: false,
   },
 ];
 
