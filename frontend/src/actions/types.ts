@@ -7,6 +7,12 @@ import {
   FetchProductDetailsSuccessAction,
   FetchProductDetailsFailAction,
 } from "./productActions";
+import {
+  UserLoginFailAction,
+  UserLoginRequestAction,
+  UserLoginSuccessAction,
+  UserLogoutAction,
+} from "./userActions";
 
 export enum ActionTypes {
   PRODUCT_LIST_REQUEST = "PRODUCT_LIST_REQUEST",
@@ -17,6 +23,10 @@ export enum ActionTypes {
   PRODUCT_DETAILS_FAIL = "PRODUCT_DETAILS_FAIL",
   CART_ADD_ITEM = "CART_ADD_ITEM",
   CART_REMOVE_ITEM = "CART_REMOVE_ITEM",
+  USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST",
+  USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS",
+  USER_LOGIN_FAIL = "USER_LOGIN_FAIL",
+  USER_LOGOUT = "USER_LOGOUT",
 }
 
 export type ProductListAction =
@@ -28,5 +38,11 @@ export type ProductDetailAction =
   | FetchProductDetailsRequestAction
   | FetchProductDetailsSuccessAction
   | FetchProductDetailsFailAction;
+
+export type UserLoginAction =
+  | UserLoginRequestAction
+  | UserLoginSuccessAction
+  | UserLoginFailAction
+  | UserLogoutAction;
 
 export type CartAction = CartAddAction | CartRemoveAction;
