@@ -2,6 +2,7 @@ import axios from "axios";
 import { ActionTypes } from "./types";
 import { UserType } from "../types/UserType";
 import { Dispatch } from "redux";
+import { StoreState } from "../store";
 
 export interface UserRegisterRequestAction {
   type: ActionTypes.USER_REGISTER_REQUEST;
@@ -30,6 +31,19 @@ export interface UserLoginFailAction {
 }
 export interface UserLogoutAction {
   type: ActionTypes.USER_LOGOUT;
+}
+
+export interface UserDetailsRequestAction {
+  type: ActionTypes.USER_DETAILS_REQUEST;
+  payload: UserType;
+}
+export interface UserDetailsSuccessAction {
+  type: ActionTypes.USER_DETAILS_SUCCESS;
+  payload: UserType;
+}
+export interface UserDetailsFailAction {
+  type: ActionTypes.USER_DETAILS_FAIL;
+  payload: string;
 }
 
 export const register = (
@@ -105,6 +119,41 @@ export const login = (email: string, password: string) => async (
   } catch (error) {
     dispatch<UserLoginFailAction>({
       type: ActionTypes.USER_LOGIN_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getUserDetails = (id: string) => async (
+  dispatch: Dispatch,
+  getState: () => StoreState
+) => {
+  try {
+    dispatch<UserDetailsRequestAction>({
+      type: ActionTypes.USER_DETAILS_REQUEST,
+      payload: {} as UserType,
+    });
+
+    const { userInfo } = getState().userLoginState;
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.get<UserType>(`/api/users/${id}`, config);
+
+    dispatch<UserDetailsSuccessAction>({
+      type: ActionTypes.USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch<UserDetailsFailAction>({
+      type: ActionTypes.USER_DETAILS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

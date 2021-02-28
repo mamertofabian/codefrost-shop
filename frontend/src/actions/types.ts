@@ -8,6 +8,9 @@ import {
   FetchProductDetailsFailAction,
 } from "./productActions";
 import {
+  UserDetailsFailAction,
+  UserDetailsRequestAction,
+  UserDetailsSuccessAction,
   UserLoginFailAction,
   UserLoginRequestAction,
   UserLoginSuccessAction,
@@ -33,6 +36,9 @@ export enum ActionTypes {
   USER_REGISTER_REQUEST = "USER_REGISTER_REQUEST",
   USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS",
   USER_REGISTER_FAIL = "USER_REGISTER_FAIL",
+  USER_DETAILS_REQUEST = "USER_DETAILS_REQUEST",
+  USER_DETAILS_SUCCESS = "USER_DETAILS_SUCCESS",
+  USER_DETAILS_FAIL = "USER_DETAILS_FAIL",
 }
 
 export type ProductListAction =
@@ -49,6 +55,11 @@ export type UserRegisterAction =
   | UserRegisterRequestAction
   | UserRegisterSuccessAction
   | UserRegisterFailAction;
+
+export type UserDetailsAction =
+  | UserDetailsRequestAction
+  | UserDetailsSuccessAction
+  | UserDetailsFailAction;
 
 export type UserLoginAction =
   | UserLoginRequestAction
