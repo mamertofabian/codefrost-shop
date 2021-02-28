@@ -12,6 +12,9 @@ import {
   UserLoginRequestAction,
   UserLoginSuccessAction,
   UserLogoutAction,
+  UserRegisterFailAction,
+  UserRegisterRequestAction,
+  UserRegisterSuccessAction,
 } from "./userActions";
 
 export enum ActionTypes {
@@ -27,6 +30,9 @@ export enum ActionTypes {
   USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS",
   USER_LOGIN_FAIL = "USER_LOGIN_FAIL",
   USER_LOGOUT = "USER_LOGOUT",
+  USER_REGISTER_REQUEST = "USER_REGISTER_REQUEST",
+  USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS",
+  USER_REGISTER_FAIL = "USER_REGISTER_FAIL",
 }
 
 export type ProductListAction =
@@ -38,6 +44,11 @@ export type ProductDetailAction =
   | FetchProductDetailsRequestAction
   | FetchProductDetailsSuccessAction
   | FetchProductDetailsFailAction;
+
+export type UserRegisterAction =
+  | UserRegisterRequestAction
+  | UserRegisterSuccessAction
+  | UserRegisterFailAction;
 
 export type UserLoginAction =
   | UserLoginRequestAction

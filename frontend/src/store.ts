@@ -9,7 +9,11 @@ import {
 } from "./reducers/productReducers";
 import { cartReducer, CartState } from "./reducers/cartReducers";
 import { CartItemType } from "./types/CartItemType";
-import { userLoginReducer, UserLoginState } from "./reducers/userReducers";
+import {
+  userLoginReducer,
+  UserLoginState,
+  userRegisterReducer,
+} from "./reducers/userReducers";
 import { UserType } from "./types/UserType";
 
 export interface StoreState {
@@ -17,6 +21,7 @@ export interface StoreState {
   productDetailState: ProductDetailState;
   cartState: CartState;
   userLoginState: UserLoginState;
+  userRegisterState: UserLoginState;
 }
 
 const reducer = combineReducers<StoreState>({
@@ -24,6 +29,7 @@ const reducer = combineReducers<StoreState>({
   productDetailState: productDetailsReducer,
   cartState: cartReducer,
   userLoginState: userLoginReducer,
+  userRegisterState: userRegisterReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem("cartItems");
@@ -41,6 +47,7 @@ const initialState: StoreState = {
   productDetailState: {} as ProductDetailState,
   productListState: {} as ProductListState,
   userLoginState: { userInfo, loading: false },
+  userRegisterState: {} as UserLoginState,
 };
 const middleware = [thunk];
 
