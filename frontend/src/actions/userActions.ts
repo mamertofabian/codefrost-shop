@@ -19,7 +19,7 @@ export interface UserLogoutAction {
   type: ActionTypes.USER_LOGOUT;
 }
 
-export const listProducts = (email: string, password: string) => async (
+export const login = (email: string, password: string) => async (
   dispatch: Dispatch
 ) => {
   try {
