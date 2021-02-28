@@ -4,9 +4,9 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getUserDetails } from "../actions/userActions";
+import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { StoreState } from "../store";
-import { UserLoginState } from "../reducers/userReducers";
+import { UserInfoState, UserUpdateState } from "../reducers/userReducers";
 
 const ProfileScreen = ({ history }: RouteComponentProps) => {
   const [name, setName] = useState("");
@@ -17,28 +17,33 @@ const ProfileScreen = ({ history }: RouteComponentProps) => {
 
   const dispatch = useDispatch();
 
-  const userDetailState = useSelector<StoreState, UserLoginState>(
+  const userDetailState = useSelector<StoreState, UserInfoState>(
     (state) => state.userDetailState
   );
   const { userInfo, loading, error } = userDetailState;
 
-  const userLoginState = useSelector<StoreState, UserLoginState>(
+  const userLoginState = useSelector<StoreState, UserInfoState>(
     (state) => state.userLoginState
   );
   const { userInfo: userLoginInfo } = userLoginState;
 
+  const userUpdateProfileState = useSelector<StoreState, UserUpdateState>(
+    (state) => state.userUpdateProfileState
+  );
+  const { success } = userUpdateProfileState;
+
   useEffect(() => {
     if (userLoginInfo && userLoginInfo.email) {
-      if (userInfo && userInfo.name) {
+      if ((!userInfo || !userInfo.name) && !loading) {
+        dispatch(getUserDetails("profile"));
+      } else {
         setName(userInfo.name);
         setEmail(userInfo.email);
-      } else {
-        dispatch(getUserDetails("profile"));
       }
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo, userLoginInfo]);
+  }, [dispatch, history, loading, userInfo, userLoginInfo]);
 
   const submitHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,7 +52,16 @@ const ProfileScreen = ({ history }: RouteComponentProps) => {
     if (password !== confirmPassword) {
       setMessage("Passwords do not match!");
     } else {
-      // DISPATCH UPDATE PROFILE
+      dispatch(
+        updateUserProfile({
+          _id: userInfo._id,
+          name,
+          email,
+          password,
+          isAdmin: false,
+          token: "",
+        })
+      );
     }
   };
 
@@ -65,6 +79,13 @@ const ProfileScreen = ({ history }: RouteComponentProps) => {
         {error ? (
           <Message variant="danger">
             <span>{error}</span>
+          </Message>
+        ) : (
+          <span></span>
+        )}
+        {success ? (
+          <Message variant="success">
+            <span>Profile Updated</span>
           </Message>
         ) : (
           <span></span>

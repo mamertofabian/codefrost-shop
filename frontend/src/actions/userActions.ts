@@ -45,6 +45,25 @@ export interface UserDetailsFailAction {
   type: ActionTypes.USER_DETAILS_FAIL;
   payload: string;
 }
+export interface UserDetailsResetAction {
+  type: ActionTypes.USER_DETAILS_RESET;
+}
+
+export interface UserUpdateProfileRequestAction {
+  type: ActionTypes.USER_UPDATE_PROFILE_REQUEST;
+  payload: UserType;
+}
+export interface UserUpdateProfileSuccessAction {
+  type: ActionTypes.USER_UPDATE_PROFILE_SUCCESS;
+  payload: UserType;
+}
+export interface UserUpdateProfileFailAction {
+  type: ActionTypes.USER_UPDATE_PROFILE_FAIL;
+  payload: string;
+}
+export interface UserUpdateProfileResetAction {
+  type: ActionTypes.USER_UPDATE_PROFILE_RESET;
+}
 
 export const register = (
   name: string,
@@ -151,9 +170,56 @@ export const getUserDetails = (id: string) => async (
       type: ActionTypes.USER_DETAILS_SUCCESS,
       payload: data,
     });
+
+    // dispatch<UserUpdateProfileResetAction>({
+    //   type: ActionTypes.USER_UPDATE_PROFILE_RESET,
+    // });
   } catch (error) {
     dispatch<UserDetailsFailAction>({
       type: ActionTypes.USER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUserProfile = (user: UserType) => async (
+  dispatch: Dispatch,
+  getState: () => StoreState
+) => {
+  try {
+    dispatch<UserUpdateProfileRequestAction>({
+      type: ActionTypes.USER_UPDATE_PROFILE_REQUEST,
+      payload: {} as UserType,
+    });
+
+    const { userInfo } = getState().userLoginState;
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put<UserType>(
+      "/api/users/profile",
+      user,
+      config
+    );
+
+    dispatch<UserUpdateProfileSuccessAction>({
+      type: ActionTypes.USER_UPDATE_PROFILE_SUCCESS,
+      payload: data,
+    });
+
+    dispatch<UserDetailsResetAction>({
+      type: ActionTypes.USER_DETAILS_RESET,
+    });
+  } catch (error) {
+    dispatch<UserUpdateProfileFailAction>({
+      type: ActionTypes.USER_UPDATE_PROFILE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

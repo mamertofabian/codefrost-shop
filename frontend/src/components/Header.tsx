@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { StoreState } from "../store";
-import { UserLoginState } from "../reducers/userReducers";
+import { UserInfoState } from "../reducers/userReducers";
 import { logout } from "../actions/userActions";
 
 const Header = () => {
   const dispatch = useDispatch();
 
-  const userLoginState = useSelector<StoreState, UserLoginState>(
+  const userLoginState = useSelector<StoreState, UserInfoState>(
     (state) => state.userLoginState
   );
   const { userInfo } = userLoginState;

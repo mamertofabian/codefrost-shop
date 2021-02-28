@@ -7,7 +7,7 @@ import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
 import { login } from "../actions/userActions";
 import { StoreState } from "../store";
-import { UserLoginState } from "../reducers/userReducers";
+import { UserInfoState } from "../reducers/userReducers";
 
 const LoginScreen = ({ history, location }: RouteComponentProps) => {
   const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ const LoginScreen = ({ history, location }: RouteComponentProps) => {
 
   const dispatch = useDispatch();
 
-  const userLoginState = useSelector<StoreState, UserLoginState>(
+  const userLoginState = useSelector<StoreState, UserInfoState>(
     (state) => state.userLoginState
   );
   const { userInfo, loading, error } = userLoginState;

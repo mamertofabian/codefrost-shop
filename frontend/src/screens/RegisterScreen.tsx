@@ -7,7 +7,7 @@ import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
 import { register } from "../actions/userActions";
 import { StoreState } from "../store";
-import { UserLoginState } from "../reducers/userReducers";
+import { UserInfoState } from "../reducers/userReducers";
 
 const RegisterScreen = ({ history, location }: RouteComponentProps) => {
   const [name, setName] = useState("");
@@ -18,7 +18,7 @@ const RegisterScreen = ({ history, location }: RouteComponentProps) => {
 
   const dispatch = useDispatch();
 
-  const userRegisterState = useSelector<StoreState, UserLoginState>(
+  const userRegisterState = useSelector<StoreState, UserInfoState>(
     (state) => state.userRegisterState
   );
   const { userInfo, loading, error } = userRegisterState;

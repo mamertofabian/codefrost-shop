@@ -10,6 +10,7 @@ import {
 import {
   UserDetailsFailAction,
   UserDetailsRequestAction,
+  UserDetailsResetAction,
   UserDetailsSuccessAction,
   UserLoginFailAction,
   UserLoginRequestAction,
@@ -18,6 +19,10 @@ import {
   UserRegisterFailAction,
   UserRegisterRequestAction,
   UserRegisterSuccessAction,
+  UserUpdateProfileRequestAction,
+  UserUpdateProfileSuccessAction,
+  UserUpdateProfileFailAction,
+  UserUpdateProfileResetAction,
 } from "./userActions";
 
 export enum ActionTypes {
@@ -39,6 +44,11 @@ export enum ActionTypes {
   USER_DETAILS_REQUEST = "USER_DETAILS_REQUEST",
   USER_DETAILS_SUCCESS = "USER_DETAILS_SUCCESS",
   USER_DETAILS_FAIL = "USER_DETAILS_FAIL",
+  USER_DETAILS_RESET = "USER_DETAILS_RESET",
+  USER_UPDATE_PROFILE_REQUEST = "USER_UPDATE_PROFILE_REQUEST",
+  USER_UPDATE_PROFILE_SUCCESS = "USER_UPDATE_PROFILE_SUCCESS",
+  USER_UPDATE_PROFILE_FAIL = "USER_UPDATE_PROFILE_FAIL",
+  USER_UPDATE_PROFILE_RESET = "USER_UPDATE_PROFILE_RESET",
 }
 
 export type ProductListAction =
@@ -59,7 +69,14 @@ export type UserRegisterAction =
 export type UserDetailsAction =
   | UserDetailsRequestAction
   | UserDetailsSuccessAction
-  | UserDetailsFailAction;
+  | UserDetailsFailAction
+  | UserDetailsResetAction;
+
+export type UserUpdateProfileAction =
+  | UserUpdateProfileRequestAction
+  | UserUpdateProfileSuccessAction
+  | UserUpdateProfileFailAction
+  | UserUpdateProfileResetAction;
 
 export type UserLoginAction =
   | UserLoginRequestAction
