@@ -7,7 +7,7 @@ import CheckoutSteps from "../components/CheckoutSteps";
 import { StoreState } from "../store";
 import { CartState } from "../reducers/cartReducers";
 import { createOrder } from "../actions/orderActions";
-import { OrderState } from "../reducers/orderReducers";
+import { OrderCreateState } from "../reducers/orderReducers";
 
 const PlaceOrderScreen = ({ history }: RouteComponentProps) => {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const PlaceOrderScreen = ({ history }: RouteComponentProps) => {
       Number(cartSummary.taxPrice)
   );
 
-  const orderState = useSelector<StoreState, OrderState>(
+  const orderState = useSelector<StoreState, OrderCreateState>(
     (state) => state.orderState
   );
   const { order, success, error } = orderState;

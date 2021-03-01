@@ -20,7 +20,7 @@ import {
 } from "./reducers/userReducers";
 import { UserType } from "./types/UserType";
 import { AddressType } from "./types/AddressType";
-import { orderCreateReducer, OrderState } from "./reducers/orderReducers";
+import { orderCreateReducer, OrderCreateState } from "./reducers/orderReducers";
 
 export interface StoreState {
   productListState: ProductListState;
@@ -30,7 +30,7 @@ export interface StoreState {
   userRegisterState: UserInfoState;
   userDetailState: UserInfoState;
   userUpdateProfileState: UserUpdateState;
-  orderState: OrderState;
+  orderState: OrderCreateState;
 }
 
 const reducer = combineReducers<StoreState>({
@@ -81,7 +81,7 @@ const initialState: StoreState = {
   userRegisterState: {} as UserInfoState,
   userDetailState: {} as UserInfoState,
   userUpdateProfileState: {} as UserUpdateState,
-  orderState: {} as OrderState,
+  orderState: {} as OrderCreateState,
 };
 const middleware = [thunk];
 
