@@ -8,7 +8,7 @@ import {
   ProductListState,
 } from "./reducers/productReducers";
 import { cartReducer, CartState } from "./reducers/cartReducers";
-import { CartItemType } from "./types/CartItemType";
+import { CartItemType, CartSummaryType } from "./types/CartItemType";
 import {
   userDetailsReducer,
   userLoginReducer,
@@ -55,7 +55,11 @@ const paymentMethod: string = paymentMethodFromStorage
   ? JSON.parse(paymentMethodFromStorage)
   : "";
 
-let cartStateFromStorage: CartState = { cartItems, paymentMethod };
+let cartStateFromStorage: CartState = {
+  cartItems,
+  paymentMethod,
+  cartSummary: {} as CartSummaryType,
+};
 if (shippingAddress && shippingAddress.address) {
   cartStateFromStorage = { ...cartStateFromStorage, shippingAddress };
 }

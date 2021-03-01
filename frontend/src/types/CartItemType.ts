@@ -7,3 +7,10 @@ export interface CartItemType {
   countInStock: number;
   qty: number;
 }
+
+export interface CartSummaryType {
+  itemsPrice: string;
+  shippingPrice: string;
+  taxPrice: string;
+  totalPrice: string;
+}
