@@ -9,7 +9,6 @@ import {
 } from "./reducers/productReducers";
 import { cartReducer, CartState } from "./reducers/cartReducers";
 import { CartItemType } from "./types/CartItemType";
-import { CartSummaryType } from "./types/CartSummaryType";
 import {
   userDetailsReducer,
   userLoginReducer,
@@ -20,7 +19,12 @@ import {
 } from "./reducers/userReducers";
 import { UserType } from "./types/UserType";
 import { AddressType } from "./types/AddressType";
-import { orderCreateReducer, OrderCreateState } from "./reducers/orderReducers";
+import {
+  orderCreateReducer,
+  OrderCreateState,
+  orderDetailReducer,
+  OrderDetailsState,
+} from "./reducers/orderReducers";
 
 export interface StoreState {
   productListState: ProductListState;
@@ -30,7 +34,8 @@ export interface StoreState {
   userRegisterState: UserInfoState;
   userDetailState: UserInfoState;
   userUpdateProfileState: UserUpdateState;
-  orderState: OrderCreateState;
+  orderCreateState: OrderCreateState;
+  orderDetailState: OrderDetailsState;
 }
 
 const reducer = combineReducers<StoreState>({
@@ -41,7 +46,8 @@ const reducer = combineReducers<StoreState>({
   userRegisterState: userRegisterReducer,
   userDetailState: userDetailsReducer,
   userUpdateProfileState: userUpdateProfileReducer,
-  orderState: orderCreateReducer,
+  orderCreateState: orderCreateReducer,
+  orderDetailState: orderDetailReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem("cartItems");
@@ -62,7 +68,6 @@ const paymentMethod: string = paymentMethodFromStorage
 let cartStateFromStorage: CartState = {
   cartItems,
   paymentMethod,
-  cartSummary: {} as CartSummaryType,
 };
 if (shippingAddress && shippingAddress.address) {
   cartStateFromStorage = { ...cartStateFromStorage, shippingAddress };
@@ -81,7 +86,8 @@ const initialState: StoreState = {
   userRegisterState: {} as UserInfoState,
   userDetailState: {} as UserInfoState,
   userUpdateProfileState: {} as UserUpdateState,
-  orderState: {} as OrderCreateState,
+  orderCreateState: {} as OrderCreateState,
+  orderDetailState: {} as OrderDetailsState,
 };
 const middleware = [thunk];
 

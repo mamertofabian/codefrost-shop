@@ -1,17 +1,19 @@
 import { ActionTypes, CartAction } from "../actions/types";
 import { AddressType } from "../types/AddressType";
 import { CartItemType } from "../types/CartItemType";
-import { CartSummaryType } from "../types/CartSummaryType";
 
 export interface CartState {
   cartItems: CartItemType[];
-  cartSummary: CartSummaryType;
   shippingAddress?: AddressType;
   paymentMethod?: string;
+  itemsPrice?: string;
+  shippingPrice?: string;
+  taxPrice?: string;
+  totalPrice?: string;
 }
 
 export const cartReducer = (
-  state: CartState = { cartItems: [], cartSummary: {} as CartSummaryType },
+  state: CartState = { cartItems: [] },
   action: CartAction
 ): CartState => {
   switch (action.type) {

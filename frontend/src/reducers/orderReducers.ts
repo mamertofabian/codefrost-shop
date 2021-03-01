@@ -11,7 +11,7 @@ export interface OrderCreateState {
 
 export interface OrderDetailsState {
   order: OrderType;
-  loading: Boolean;
+  loading: boolean;
   shippingAddress?: AddressType;
   error?: string;
 }

@@ -15,31 +15,25 @@ const PlaceOrderScreen = ({ history }: RouteComponentProps) => {
   const cartState = useSelector<StoreState, CartState>(
     (state) => state.cartState
   );
-  const { cartItems, cartSummary, paymentMethod, shippingAddress } = cartState;
+  const { cartItems, paymentMethod, shippingAddress } = cartState;
 
   const addDecimals = (num: number) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
   // Calculate prices
-  cartSummary.itemsPrice = addDecimals(
+  const itemsPrice = addDecimals(
     cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   );
-  cartSummary.shippingPrice = addDecimals(
-    Number(cartSummary.itemsPrice) > 100 ? 0 : 100
-  );
-  cartSummary.taxPrice = addDecimals(
-    Number((Number(cartSummary.itemsPrice) * 0.15).toFixed(2))
-  );
-  cartSummary.totalPrice = addDecimals(
-    Number(cartSummary.itemsPrice) +
-      Number(cartSummary.shippingPrice) +
-      Number(cartSummary.taxPrice)
+  const shippingPrice = addDecimals(Number(itemsPrice) > 100 ? 0 : 100);
+  const taxPrice = addDecimals(Number((Number(itemsPrice) * 0.15).toFixed(2)));
+  const totalPrice = addDecimals(
+    Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice)
   );
 
-  const orderState = useSelector<StoreState, OrderCreateState>(
-    (state) => state.orderState
+  const orderCreateState = useSelector<StoreState, OrderCreateState>(
+    (state) => state.orderCreateState
   );
-  const { order, success, error } = orderState;
+  const { order, success, error } = orderCreateState;
 
   useEffect(() => {
     if (success && order) {
@@ -53,7 +47,10 @@ const PlaceOrderScreen = ({ history }: RouteComponentProps) => {
         orderItems: cartItems,
         shippingAddress: shippingAddress,
         paymentMethod,
-        orderSummary: cartSummary,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
       })
     );
   };
@@ -122,25 +119,25 @@ const PlaceOrderScreen = ({ history }: RouteComponentProps) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${cartSummary.itemsPrice}</Col>
+                  <Col>${itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${cartSummary.shippingPrice}</Col>
+                  <Col>${shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>${cartSummary.taxPrice}</Col>
+                  <Col>${taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${cartSummary.totalPrice}</Col>
+                  <Col>${totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
