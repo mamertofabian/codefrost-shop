@@ -56,6 +56,9 @@ export interface UserOrdersFailAction {
   type: ActionTypes.USER_ORDERS_FAIL;
   payload: string;
 }
+export interface UserOrdersResetAction {
+  type: ActionTypes.USER_ORDERS_RESET;
+}
 
 export const createOrder = (order: OrderType) => async (
   dispatch: Dispatch,

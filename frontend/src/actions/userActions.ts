@@ -3,6 +3,7 @@ import { ActionTypes } from "./types";
 import { UserType } from "../types/UserType";
 import { Dispatch } from "redux";
 import { StoreState } from "../store";
+import { UserOrdersResetAction } from "./orderActions";
 
 export interface UserRegisterRequestAction {
   type: ActionTypes.USER_REGISTER_REQUEST;
@@ -231,4 +232,6 @@ export const updateUserProfile = (user: UserType) => async (
 export const logout = () => (dispatch: Dispatch) => {
   localStorage.removeItem("userInfo");
   dispatch<UserLogoutAction>({ type: ActionTypes.USER_LOGOUT });
+  dispatch<UserDetailsResetAction>({ type: ActionTypes.USER_DETAILS_RESET });
+  dispatch<UserOrdersResetAction>({ type: ActionTypes.USER_ORDERS_RESET });
 };

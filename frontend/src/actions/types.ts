@@ -18,6 +18,7 @@ import {
   UserOrdersRequestAction,
   UserOrdersSuccessAction,
   UserOrdersFailAction,
+  UserOrdersResetAction,
 } from "./orderActions";
 import {
   FetchProductsRequestAction,
@@ -84,6 +85,7 @@ export enum ActionTypes {
   USER_ORDERS_REQUEST = "USER_ORDERS_REQUEST",
   USER_ORDERS_SUCCESS = "USER_ORDERS_SUCCESS",
   USER_ORDERS_FAIL = "USER_ORDERS_FAIL",
+  USER_ORDERS_RESET = "USER_ORDERS_RESET",
 }
 
 export type ProductListAction =
@@ -144,4 +146,5 @@ export type OrderPayAction =
 export type UserOrdersAction =
   | UserOrdersRequestAction
   | UserOrdersSuccessAction
-  | UserOrdersFailAction;
+  | UserOrdersFailAction
+  | UserOrdersResetAction;

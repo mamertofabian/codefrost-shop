@@ -136,6 +136,8 @@ export const userOrdersReducer = (
         ...state,
         error: action.payload,
       };
+    case ActionTypes.USER_ORDERS_RESET:
+      return state;
     default:
       return state;
   }
