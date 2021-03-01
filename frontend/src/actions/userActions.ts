@@ -61,6 +61,9 @@ export interface UserListFailAction {
   type: ActionTypes.USER_LIST_FAIL;
   payload: string;
 }
+export interface UserListResetAction {
+  type: ActionTypes.USER_LIST_RESET;
+}
 
 export interface UserUpdateProfileRequestAction {
   type: ActionTypes.USER_UPDATE_PROFILE_REQUEST;
@@ -279,4 +282,5 @@ export const logout = () => (dispatch: Dispatch) => {
   dispatch<UserLogoutAction>({ type: ActionTypes.USER_LOGOUT });
   dispatch<UserDetailsResetAction>({ type: ActionTypes.USER_DETAILS_RESET });
   dispatch<UserOrdersResetAction>({ type: ActionTypes.USER_ORDERS_RESET });
+  dispatch<UserListResetAction>({ type: ActionTypes.USER_LIST_RESET });
 };

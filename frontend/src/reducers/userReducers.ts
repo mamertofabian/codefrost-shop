@@ -137,6 +137,8 @@ export const userListReducer = (
         loading: false,
         error: action.payload,
       };
+    case ActionTypes.USER_LIST_RESET:
+      return { users: [] as UserType[], loading: false };
     default:
       return state;
   }

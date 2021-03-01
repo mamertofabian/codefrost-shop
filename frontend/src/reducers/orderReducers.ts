@@ -109,7 +109,7 @@ export const orderPayReducer = (
         error: action.payload,
       };
     case ActionTypes.ORDER_PAY_RESET:
-      return state;
+      return { order: {} as OrderType, loading: false, success: false };
 
     default:
       return state;
@@ -137,7 +137,7 @@ export const userOrdersReducer = (
         error: action.payload,
       };
     case ActionTypes.USER_ORDERS_RESET:
-      return state;
+      return { orders: [] as OrderType[], loading: false };
     default:
       return state;
   }
