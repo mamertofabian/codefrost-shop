@@ -65,6 +65,17 @@ export interface UserListResetAction {
   type: ActionTypes.USER_LIST_RESET;
 }
 
+export interface UserDeleteRequestAction {
+  type: ActionTypes.USER_DELETE_REQUEST;
+}
+export interface UserDeleteSuccessAction {
+  type: ActionTypes.USER_DELETE_SUCCESS;
+}
+export interface UserDeleteFailAction {
+  type: ActionTypes.USER_DELETE_FAIL;
+  payload: string;
+}
+
 export interface UserUpdateProfileRequestAction {
   type: ActionTypes.USER_UPDATE_PROFILE_REQUEST;
   payload: UserType;
@@ -269,6 +280,38 @@ export const getUsers = () => async (
   } catch (error) {
     dispatch<UserListFailAction>({
       type: ActionTypes.USER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteUser = (userId: string) => async (
+  dispatch: Dispatch,
+  getState: () => StoreState
+) => {
+  try {
+    dispatch<UserDeleteRequestAction>({
+      type: ActionTypes.USER_DELETE_REQUEST,
+    });
+
+    const { userInfo } = getState().userLoginState;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await axios.delete(`/api/users/${userId}`, config);
+
+    dispatch<UserDeleteSuccessAction>({
+      type: ActionTypes.USER_DELETE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch<UserDeleteFailAction>({
+      type: ActionTypes.USER_DELETE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

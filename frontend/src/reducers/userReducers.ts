@@ -1,5 +1,6 @@
 import {
   ActionTypes,
+  UserDeleteAction,
   UserDetailsAction,
   UserListAction,
   UserLoginAction,
@@ -17,6 +18,12 @@ export interface UserInfoState {
 export interface UserListState {
   loading: Boolean;
   users: UserType[];
+  error?: string;
+}
+
+export interface UserDeleteState {
+  loading: boolean;
+  deleted: boolean;
   error?: string;
 }
 
@@ -139,6 +146,26 @@ export const userListReducer = (
       };
     case ActionTypes.USER_LIST_RESET:
       return { users: [] as UserType[], loading: false };
+    default:
+      return state;
+  }
+};
+
+export const userDeleteReducer = (
+  state: UserDeleteState = { loading: false, deleted: false },
+  action: UserDeleteAction
+): UserDeleteState => {
+  switch (action.type) {
+    case ActionTypes.USER_DELETE_REQUEST:
+      return { ...state, loading: true };
+    case ActionTypes.USER_DELETE_SUCCESS:
+      return { loading: false, deleted: true };
+    case ActionTypes.USER_DELETE_FAIL:
+      return {
+        deleted: false,
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

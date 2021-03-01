@@ -5,9 +5,13 @@ import { RouteComponentProps } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getUsers } from "../actions/userActions";
+import { deleteUser, getUsers } from "../actions/userActions";
 import { StoreState } from "../store";
-import { UserInfoState, UserListState } from "../reducers/userReducers";
+import {
+  UserDeleteState,
+  UserInfoState,
+  UserListState,
+} from "../reducers/userReducers";
 
 const UserListScreen = ({ history }: RouteComponentProps) => {
   const dispatch = useDispatch();
@@ -22,15 +26,24 @@ const UserListScreen = ({ history }: RouteComponentProps) => {
   );
   const { userInfo } = userLoginState;
 
+  const userDeleteState = useSelector<StoreState, UserDeleteState>(
+    (state) => state.userDeleteState
+  );
+  const { deleted } = userDeleteState;
+
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(getUsers());
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo]);
+  }, [dispatch, history, deleted, userInfo]);
 
-  const deleteHandler = (userId: string) => {};
+  const deleteHandler = (userId: string) => {
+    if (window.confirm("Are you sure?")) {
+      dispatch(deleteUser(userId));
+    }
+  };
 
   return (
     <Fragment>
