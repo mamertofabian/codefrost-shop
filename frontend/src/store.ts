@@ -18,6 +18,7 @@ import {
   userUpdateProfileReducer,
 } from "./reducers/userReducers";
 import { UserType } from "./types/UserType";
+import { AddressType } from "./types/AddressType";
 
 export interface StoreState {
   productListState: ProductListState;
@@ -44,13 +45,23 @@ const cartItems: CartItemType[] = cartItemsFromStorage
   ? JSON.parse(cartItemsFromStorage)
   : [];
 
+const shippingAddressFromStorage = localStorage.getItem("shippingAddress");
+const shippingAddress: AddressType = shippingAddressFromStorage
+  ? JSON.parse(shippingAddressFromStorage)
+  : {};
+
+let cartStateFromStorage: CartState = { cartItems };
+if (shippingAddress && shippingAddress.address) {
+  cartStateFromStorage = { ...cartStateFromStorage, shippingAddress };
+}
+
 const userInfoFromStorage = localStorage.getItem("userInfo");
 const userInfo: UserType = userInfoFromStorage
   ? JSON.parse(userInfoFromStorage)
   : {};
 
 const initialState: StoreState = {
-  cartState: { cartItems },
+  cartState: cartStateFromStorage,
   productDetailState: {} as ProductDetailState,
   productListState: {} as ProductListState,
   userLoginState: { userInfo, loading: false },

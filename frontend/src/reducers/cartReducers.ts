@@ -1,8 +1,10 @@
 import { ActionTypes, CartAction } from "../actions/types";
+import { AddressType } from "../types/AddressType";
 import { CartItemType } from "../types/CartItemType";
 
 export interface CartState {
   cartItems: CartItemType[];
+  shippingAddress?: AddressType;
 }
 
 export const cartReducer = (
@@ -33,6 +35,12 @@ export const cartReducer = (
       return {
         ...state,
         cartItems: state.cartItems.filter((i) => i.product !== action.payload),
+      };
+
+    case ActionTypes.CART_SAVE_SHIPPING_ADDRESS:
+      return {
+        ...state,
+        shippingAddress: action.payload,
       };
 
     default:

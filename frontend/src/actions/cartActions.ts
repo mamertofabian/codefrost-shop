@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Dispatch } from "redux";
 import { StoreState } from "../store";
+import { AddressType } from "../types/AddressType";
 import { CartItemType } from "../types/CartItemType";
 import { ActionTypes } from "./types";
 
@@ -12,6 +13,11 @@ export interface CartAddAction {
 export interface CartRemoveAction {
   type: ActionTypes.CART_REMOVE_ITEM;
   payload: string;
+}
+
+export interface CartSaveShippingAddress {
+  type: ActionTypes.CART_SAVE_SHIPPING_ADDRESS;
+  payload: AddressType;
 }
 
 export const addToCart = (id: string, qty: number) => async (
@@ -44,4 +50,15 @@ export const removeFromCart = (id: string) => (
     "cartItems",
     JSON.stringify(getState().cartState.cartItems)
   );
+};
+
+export const saveShippingAdderss = (data: AddressType) => (
+  dispatch: Dispatch
+) => {
+  dispatch<CartSaveShippingAddress>({
+    type: ActionTypes.CART_SAVE_SHIPPING_ADDRESS,
+    payload: data,
+  });
+
+  localStorage.setItem("shippingAddress", JSON.stringify(data));
 };
