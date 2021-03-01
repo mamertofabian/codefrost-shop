@@ -16,7 +16,9 @@ export interface OrderType {
   taxPrice: string;
   totalPrice: string;
   isPaid?: boolean;
-  paidAt?: Date;
+  paidAt?: string;
   isDelivered?: boolean;
-  deliveredAt?: Date;
+  deliveredAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
