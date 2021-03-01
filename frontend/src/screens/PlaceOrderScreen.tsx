@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,12 +6,16 @@ import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { StoreState } from "../store";
 import { CartState } from "../reducers/cartReducers";
+import { createOrder } from "../actions/orderActions";
+import { OrderState } from "../reducers/orderReducers";
 
-const PlaceOrderScreen = () => {
+const PlaceOrderScreen = ({ history }: RouteComponentProps) => {
+  const dispatch = useDispatch();
+
   const cartState = useSelector<StoreState, CartState>(
     (state) => state.cartState
   );
-  const { cartItems, cartSummary } = cartState;
+  const { cartItems, cartSummary, paymentMethod, shippingAddress } = cartState;
 
   const addDecimals = (num: number) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -32,8 +36,26 @@ const PlaceOrderScreen = () => {
       Number(cartSummary.taxPrice)
   );
 
+  const orderState = useSelector<StoreState, OrderState>(
+    (state) => state.orderState
+  );
+  const { order, success, error } = orderState;
+
+  useEffect(() => {
+    if (success && order) {
+      history.push(`/order/${order._id}`);
+    }
+  }, [history, order, success]);
+
   const placeOrderHandler = () => {
-    console.log("placeorder");
+    dispatch(
+      createOrder({
+        orderItems: cartItems,
+        shippingAddress: shippingAddress,
+        paymentMethod,
+        orderSummary: cartSummary,
+      })
+    );
   };
 
   return (
@@ -121,6 +143,11 @@ const PlaceOrderScreen = () => {
                   <Col>${cartSummary.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+
+              <ListGroup.Item>
+                {error && <Message variant="danger">{error}</Message>}
+              </ListGroup.Item>
+
               <ListGroup.Item>
                 <Button
                   type="button"

@@ -8,7 +8,8 @@ import {
   ProductListState,
 } from "./reducers/productReducers";
 import { cartReducer, CartState } from "./reducers/cartReducers";
-import { CartItemType, CartSummaryType } from "./types/CartItemType";
+import { CartItemType } from "./types/CartItemType";
+import { CartSummaryType } from "./types/CartSummaryType";
 import {
   userDetailsReducer,
   userLoginReducer,
@@ -19,6 +20,7 @@ import {
 } from "./reducers/userReducers";
 import { UserType } from "./types/UserType";
 import { AddressType } from "./types/AddressType";
+import { orderCreateReducer, OrderState } from "./reducers/orderReducers";
 
 export interface StoreState {
   productListState: ProductListState;
@@ -28,6 +30,7 @@ export interface StoreState {
   userRegisterState: UserInfoState;
   userDetailState: UserInfoState;
   userUpdateProfileState: UserUpdateState;
+  orderState: OrderState;
 }
 
 const reducer = combineReducers<StoreState>({
@@ -38,6 +41,7 @@ const reducer = combineReducers<StoreState>({
   userRegisterState: userRegisterReducer,
   userDetailState: userDetailsReducer,
   userUpdateProfileState: userUpdateProfileReducer,
+  orderState: orderCreateReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem("cartItems");
@@ -77,6 +81,7 @@ const initialState: StoreState = {
   userRegisterState: {} as UserInfoState,
   userDetailState: {} as UserInfoState,
   userUpdateProfileState: {} as UserUpdateState,
+  orderState: {} as OrderState,
 };
 const middleware = [thunk];
 

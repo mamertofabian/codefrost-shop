@@ -1,6 +1,7 @@
 import { ActionTypes, CartAction } from "../actions/types";
 import { AddressType } from "../types/AddressType";
-import { CartItemType, CartSummaryType } from "../types/CartItemType";
+import { CartItemType } from "../types/CartItemType";
+import { CartSummaryType } from "../types/CartSummaryType";
 
 export interface CartState {
   cartItems: CartItemType[];

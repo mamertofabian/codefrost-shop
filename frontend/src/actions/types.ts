@@ -5,6 +5,11 @@ import {
   CartSaveShippingAddress,
 } from "./cartActions";
 import {
+  OrderCreateFailAction,
+  OrderCreateRequestAction,
+  OrderCreateSuccessAction,
+} from "./orderActions";
+import {
   FetchProductsRequestAction,
   FetchProductsSuccessAction,
   FetchProductsFailAction,
@@ -56,6 +61,9 @@ export enum ActionTypes {
   USER_UPDATE_PROFILE_RESET = "USER_UPDATE_PROFILE_RESET",
   CART_SAVE_SHIPPING_ADDRESS = "CART_SAVE_SHIPPING_ADDRESS",
   CART_SAVE_PAYMENT_METHOD = "CART_SAVE_PAYMENT_METHOD",
+  ORDER_CREATE_REQUEST = "ORDER_CREATE_REQUEST",
+  ORDER_CREATE_SUCCESS = "ORDER_CREATE_SUCCESS",
+  ORDER_CREATE_FAIL = "ORDER_CREATE_FAIL",
 }
 
 export type ProductListAction =
@@ -96,3 +104,8 @@ export type CartAction =
   | CartRemoveAction
   | CartSaveShippingAddress
   | CartSavePaymentMethod;
+
+export type OrderAction =
+  | OrderCreateRequestAction
+  | OrderCreateSuccessAction
+  | OrderCreateFailAction;
