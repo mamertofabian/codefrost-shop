@@ -1,4 +1,9 @@
-import { ActionTypes, OrderCreateAction, OrderDetailsAction } from "../actions";
+import {
+  ActionTypes,
+  OrderCreateAction,
+  OrderDetailsAction,
+  OrderPayAction,
+} from "../actions";
 import { AddressType } from "../types/AddressType";
 import { OrderType } from "../types/OrderType";
 
@@ -13,6 +18,13 @@ export interface OrderDetailsState {
   order: OrderType;
   loading: boolean;
   shippingAddress?: AddressType;
+  error?: string;
+}
+
+export interface OrderPayState {
+  order: OrderType;
+  success: boolean;
+  loading: boolean;
   error?: string;
 }
 
@@ -66,6 +78,37 @@ export const orderDetailReducer = (
         order: {} as OrderType,
         error: action.payload,
       };
+
+    default:
+      return state;
+  }
+};
+
+export const orderPayReducer = (
+  state = { order: {} as OrderType, loading: false, success: false },
+  action: OrderPayAction
+): OrderPayState => {
+  switch (action.type) {
+    case ActionTypes.ORDER_PAY_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.ORDER_PAY_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        order: action.payload,
+      };
+
+    case ActionTypes.ORDER_PAY_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case ActionTypes.ORDER_PAY_RESET:
+      return state;
 
     default:
       return state;

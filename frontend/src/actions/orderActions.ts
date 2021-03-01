@@ -3,6 +3,7 @@ import axios from "axios";
 import { StoreState } from "../store";
 import { OrderType } from "../types/OrderType";
 import { ActionTypes } from "./types";
+import { PaymentResultType } from "../types/PaymentResultType";
 
 export interface OrderCreateRequestAction {
   type: ActionTypes.ORDER_CREATE_REQUEST;
@@ -27,6 +28,21 @@ export interface OrderDetailsSuccessAction {
 export interface OrderDetailsFailAction {
   type: ActionTypes.ORDER_DETAILS_FAIL;
   payload: string;
+}
+
+export interface OrderPayRequestAction {
+  type: ActionTypes.ORDER_PAY_REQUEST;
+}
+export interface OrderPaySuccessAction {
+  type: ActionTypes.ORDER_PAY_SUCCESS;
+  payload: OrderType;
+}
+export interface OrderPayFailAction {
+  type: ActionTypes.ORDER_PAY_FAIL;
+  payload: string;
+}
+export interface OrderPayResetAction {
+  type: ActionTypes.ORDER_PAY_RESET;
 }
 
 export const createOrder = (order: OrderType) => async (
@@ -89,6 +105,44 @@ export const getOrderDetails = (id: string) => async (
   } catch (error) {
     dispatch<OrderDetailsFailAction>({
       type: ActionTypes.ORDER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const payOrder = (
+  id: string,
+  paymentResult: PaymentResultType
+) => async (dispatch: Dispatch, getState: () => StoreState) => {
+  try {
+    dispatch<OrderPayRequestAction>({
+      type: ActionTypes.ORDER_PAY_REQUEST,
+    });
+
+    const { userInfo } = getState().userLoginState;
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put<OrderType>(
+      `/api/orders/${id}/pay`,
+      paymentResult,
+      config
+    );
+
+    dispatch<OrderPaySuccessAction>({
+      type: ActionTypes.ORDER_PAY_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch<OrderPayFailAction>({
+      type: ActionTypes.ORDER_PAY_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
