@@ -23,8 +23,10 @@ const OrderScreen = ({ match }: RouteComponentProps<MatchParams>) => {
   const { order, loading, error } = orderDetailState;
 
   useEffect(() => {
-    dispatch(getOrderDetails(orderId));
-  }, [dispatch, orderId]);
+    if (!order || order._id !== orderId) {
+      dispatch(getOrderDetails(orderId));
+    }
+  }, [order, dispatch, orderId]);
 
   return loading || !order || !order._id ? (
     <Loader />
