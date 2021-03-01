@@ -50,7 +50,12 @@ const shippingAddress: AddressType = shippingAddressFromStorage
   ? JSON.parse(shippingAddressFromStorage)
   : {};
 
-let cartStateFromStorage: CartState = { cartItems };
+const paymentMethodFromStorage = localStorage.getItem("paymentMethod");
+const paymentMethod: string = paymentMethodFromStorage
+  ? JSON.parse(paymentMethodFromStorage)
+  : "";
+
+let cartStateFromStorage: CartState = { cartItems, paymentMethod };
 if (shippingAddress && shippingAddress.address) {
   cartStateFromStorage = { ...cartStateFromStorage, shippingAddress };
 }

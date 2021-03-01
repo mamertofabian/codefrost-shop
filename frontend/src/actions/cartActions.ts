@@ -20,6 +20,11 @@ export interface CartSaveShippingAddress {
   payload: AddressType;
 }
 
+export interface CartSavePaymentMethod {
+  type: ActionTypes.CART_SAVE_PAYMENT_METHOD;
+  payload: string;
+}
+
 export const addToCart = (id: string, qty: number) => async (
   dispatch: Dispatch,
   getState: () => StoreState
@@ -61,4 +66,15 @@ export const saveShippingAdderss = (data: AddressType) => (
   });
 
   localStorage.setItem("shippingAddress", JSON.stringify(data));
+};
+
+export const savePaymentMethod = (paymentMethod: string) => (
+  dispatch: Dispatch
+) => {
+  dispatch<CartSavePaymentMethod>({
+    type: ActionTypes.CART_SAVE_PAYMENT_METHOD,
+    payload: paymentMethod,
+  });
+
+  localStorage.setItem("paymentMethod", JSON.stringify(paymentMethod));
 };

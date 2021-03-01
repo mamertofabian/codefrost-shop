@@ -5,6 +5,7 @@ import { CartItemType } from "../types/CartItemType";
 export interface CartState {
   cartItems: CartItemType[];
   shippingAddress?: AddressType;
+  paymentMethod?: string;
 }
 
 export const cartReducer = (
@@ -41,6 +42,12 @@ export const cartReducer = (
       return {
         ...state,
         shippingAddress: action.payload,
+      };
+
+    case ActionTypes.CART_SAVE_PAYMENT_METHOD:
+      return {
+        ...state,
+        paymentMethod: action.payload,
       };
 
     default:

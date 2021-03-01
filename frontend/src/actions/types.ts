@@ -1,6 +1,7 @@
 import {
   CartAddAction,
   CartRemoveAction,
+  CartSavePaymentMethod,
   CartSaveShippingAddress,
 } from "./cartActions";
 import {
@@ -54,6 +55,7 @@ export enum ActionTypes {
   USER_UPDATE_PROFILE_FAIL = "USER_UPDATE_PROFILE_FAIL",
   USER_UPDATE_PROFILE_RESET = "USER_UPDATE_PROFILE_RESET",
   CART_SAVE_SHIPPING_ADDRESS = "CART_SAVE_SHIPPING_ADDRESS",
+  CART_SAVE_PAYMENT_METHOD = "CART_SAVE_PAYMENT_METHOD",
 }
 
 export type ProductListAction =
@@ -92,4 +94,5 @@ export type UserLoginAction =
 export type CartAction =
   | CartAddAction
   | CartRemoveAction
-  | CartSaveShippingAddress;
+  | CartSaveShippingAddress
+  | CartSavePaymentMethod;
