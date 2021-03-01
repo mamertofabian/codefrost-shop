@@ -50,6 +50,18 @@ export interface UserDetailsResetAction {
   type: ActionTypes.USER_DETAILS_RESET;
 }
 
+export interface UserListRequestAction {
+  type: ActionTypes.USER_LIST_REQUEST;
+}
+export interface UserListSuccessAction {
+  type: ActionTypes.USER_LIST_SUCCESS;
+  payload: UserType[];
+}
+export interface UserListFailAction {
+  type: ActionTypes.USER_LIST_FAIL;
+  payload: string;
+}
+
 export interface UserUpdateProfileRequestAction {
   type: ActionTypes.USER_UPDATE_PROFILE_REQUEST;
   payload: UserType;
@@ -221,6 +233,39 @@ export const updateUserProfile = (user: UserType) => async (
   } catch (error) {
     dispatch<UserUpdateProfileFailAction>({
       type: ActionTypes.USER_UPDATE_PROFILE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getUsers = () => async (
+  dispatch: Dispatch,
+  getState: () => StoreState
+) => {
+  try {
+    dispatch<UserListRequestAction>({
+      type: ActionTypes.USER_LIST_REQUEST,
+    });
+
+    const { userInfo } = getState().userLoginState;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.get<UserType[]>("/api/users", config);
+
+    dispatch<UserListSuccessAction>({
+      type: ActionTypes.USER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch<UserListFailAction>({
+      type: ActionTypes.USER_LIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

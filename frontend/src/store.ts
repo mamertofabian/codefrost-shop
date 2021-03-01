@@ -16,6 +16,8 @@ import {
   userRegisterReducer,
   UserUpdateState,
   userUpdateProfileReducer,
+  UserListState,
+  userListReducer,
 } from "./reducers/userReducers";
 import { UserType } from "./types/UserType";
 import { AddressType } from "./types/AddressType";
@@ -37,6 +39,7 @@ export interface StoreState {
   userLoginState: UserInfoState;
   userRegisterState: UserInfoState;
   userDetailState: UserInfoState;
+  userListState: UserListState;
   userUpdateProfileState: UserUpdateState;
   orderCreateState: OrderCreateState;
   orderDetailState: OrderDetailsState;
@@ -51,6 +54,7 @@ const reducer = combineReducers<StoreState>({
   userLoginState: userLoginReducer,
   userRegisterState: userRegisterReducer,
   userDetailState: userDetailsReducer,
+  userListState: userListReducer,
   userUpdateProfileState: userUpdateProfileReducer,
   orderCreateState: orderCreateReducer,
   orderDetailState: orderDetailReducer,
@@ -93,6 +97,7 @@ const initialState: StoreState = {
   userLoginState: { userInfo, loading: false },
   userRegisterState: {} as UserInfoState,
   userDetailState: {} as UserInfoState,
+  userListState: {} as UserListState,
   userUpdateProfileState: {} as UserUpdateState,
   orderCreateState: {} as OrderCreateState,
   orderDetailState: {} as OrderDetailsState,

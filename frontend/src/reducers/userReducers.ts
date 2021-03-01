@@ -1,6 +1,7 @@
 import {
   ActionTypes,
   UserDetailsAction,
+  UserListAction,
   UserLoginAction,
   UserRegisterAction,
   UserUpdateProfileAction,
@@ -10,6 +11,12 @@ import { UserType } from "../types/UserType";
 export interface UserInfoState {
   loading: Boolean;
   userInfo: UserType;
+  error?: string;
+}
+
+export interface UserListState {
+  loading: Boolean;
+  users: UserType[];
   error?: string;
 }
 
@@ -109,6 +116,26 @@ export const userUpdateProfileReducer = (
         loading: false,
         success: false,
         userInfo: {} as UserType,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userListReducer = (
+  state: UserListState = { loading: false, users: [] as UserType[] },
+  action: UserListAction
+): UserListState => {
+  switch (action.type) {
+    case ActionTypes.USER_LIST_REQUEST:
+      return { ...state, loading: true };
+    case ActionTypes.USER_LIST_SUCCESS:
+      return { loading: false, users: action.payload };
+    case ActionTypes.USER_LIST_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;
