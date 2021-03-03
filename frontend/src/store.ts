@@ -10,6 +10,8 @@ import {
   ProductDetailState,
   productListReducer,
   ProductListState,
+  productUpdateReducer,
+  ProductUpdateState,
 } from "./reducers/productReducers";
 import { cartReducer, CartState } from "./reducers/cartReducers";
 import { CartItemType } from "./types/CartItemType";
@@ -43,6 +45,7 @@ export interface StoreState {
   productListState: ProductListState;
   productDetailState: ProductDetailState;
   productCreateState: ProductCreateState;
+  productUpdateState: ProductUpdateState;
   productDeleteState: ProductDeleteState;
   cartState: CartState;
   userLoginState: UserInfoState;
@@ -62,6 +65,7 @@ const reducer = combineReducers<StoreState>({
   productListState: productListReducer,
   productDetailState: productDetailsReducer,
   productCreateState: productCreateReducer,
+  productUpdateState: productUpdateReducer,
   productDeleteState: productDeleteReducer,
   cartState: cartReducer,
   userLoginState: userLoginReducer,
@@ -110,6 +114,7 @@ const initialState: StoreState = {
   productListState: {} as ProductListState,
   productDetailState: {} as ProductDetailState,
   productCreateState: {} as ProductCreateState,
+  productUpdateState: {} as ProductUpdateState,
   productDeleteState: {} as ProductDeleteState,
   userLoginState: { userInfo, loading: false },
   userRegisterState: {} as UserInfoState,

@@ -34,6 +34,10 @@ import {
   ProductCreateSuccessAction,
   ProductCreateFailAction,
   ProductCreateRequestAction,
+  ProductUpdateRequestAction,
+  ProductUpdateSuccessAction,
+  ProductUpdateFailAction,
+  ProductUpdateResetAction,
 } from "./productActions";
 import {
   UserDetailsFailAction,
@@ -78,6 +82,10 @@ export enum ActionTypes {
   PRODUCT_CREATE_SUCCESS = "PRODUCT_CREATE_SUCCESS",
   PRODUCT_CREATE_FAIL = "PRODUCT_CREATE_FAIL",
   PRODUCT_CREATE_RESET = "PRODUCT_CREATE_RESET",
+  PRODUCT_UPDATE_REQUEST = "PRODUCT_UPDATE_REQUEST",
+  PRODUCT_UPDATE_SUCCESS = "PRODUCT_UPDATE_SUCCESS",
+  PRODUCT_UPDATE_FAIL = "PRODUCT_UPDATE_FAIL",
+  PRODUCT_UPDATE_RESET = "PRODUCT_UPDATE_RESET",
   CART_ADD_ITEM = "CART_ADD_ITEM",
   CART_REMOVE_ITEM = "CART_REMOVE_ITEM",
   USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST",
@@ -144,6 +152,12 @@ export type ProductCreateAction =
   | ProductCreateSuccessAction
   | ProductCreateFailAction
   | ProductCreateResetAction;
+
+export type ProductUpdateAction =
+  | ProductUpdateRequestAction
+  | ProductUpdateSuccessAction
+  | ProductUpdateFailAction
+  | ProductUpdateResetAction;
 
 export type UserRegisterAction =
   | UserRegisterRequestAction

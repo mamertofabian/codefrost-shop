@@ -4,6 +4,7 @@ import {
   ProductDeleteAction,
   ProductDetailAction,
   ProductListAction,
+  ProductUpdateAction,
 } from "../actions";
 import { ProductType, Reviews } from "../types/ProductType";
 
@@ -22,6 +23,13 @@ export interface ProductDetailState {
 export interface ProductCreateState {
   loading?: Boolean;
   created?: Boolean;
+  product?: ProductType;
+  error?: string;
+}
+
+export interface ProductUpdateState {
+  loading?: Boolean;
+  updated?: Boolean;
   product?: ProductType;
   error?: string;
 }
@@ -124,6 +132,36 @@ export const productCreateReducer = (
         error: action.payload,
       };
     case ActionTypes.PRODUCT_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const productUpdateReducer = (
+  state: ProductUpdateState = {
+    loading: false,
+    updated: false,
+    product: { reviews: [] as Reviews[] } as ProductType,
+  },
+  action: ProductUpdateAction
+): ProductUpdateState => {
+  switch (action.type) {
+    case ActionTypes.PRODUCT_UPDATE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.PRODUCT_UPDATE_SUCCESS:
+      return { loading: false, updated: true, product: action.payload };
+    case ActionTypes.PRODUCT_UPDATE_FAIL:
+      return {
+        loading: false,
+        updated: false,
+        product: {} as ProductType,
+        error: action.payload,
+      };
+    case ActionTypes.PRODUCT_UPDATE_RESET:
       return {};
     default:
       return state;

@@ -56,6 +56,21 @@ export interface ProductCreateResetAction {
   type: ActionTypes.PRODUCT_CREATE_RESET;
 }
 
+export interface ProductUpdateRequestAction {
+  type: ActionTypes.PRODUCT_UPDATE_REQUEST;
+}
+export interface ProductUpdateSuccessAction {
+  type: ActionTypes.PRODUCT_UPDATE_SUCCESS;
+  payload: ProductType;
+}
+export interface ProductUpdateFailAction {
+  type: ActionTypes.PRODUCT_UPDATE_FAIL;
+  payload: string;
+}
+export interface ProductUpdateResetAction {
+  type: ActionTypes.PRODUCT_UPDATE_RESET;
+}
+
 export const listProducts = () => async (dispatch: Dispatch) => {
   try {
     dispatch<FetchProductsRequestAction>({
@@ -161,6 +176,43 @@ export const createProduct = () => async (
   } catch (error) {
     dispatch<ProductCreateFailAction>({
       type: ActionTypes.PRODUCT_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateProduct = (product: ProductType) => async (
+  dispatch: Dispatch,
+  getState: () => StoreState
+) => {
+  try {
+    dispatch<ProductUpdateRequestAction>({
+      type: ActionTypes.PRODUCT_UPDATE_REQUEST,
+    });
+
+    const { userInfo } = getState().userLoginState;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put<ProductType>(
+      `/api/products/${product._id}`,
+      product,
+      config
+    );
+
+    dispatch<ProductUpdateSuccessAction>({
+      type: ActionTypes.PRODUCT_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch<ProductUpdateFailAction>({
+      type: ActionTypes.PRODUCT_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
