@@ -4,9 +4,10 @@ import {
   ProductDeleteAction,
   ProductDetailAction,
   ProductListAction,
+  ProductReviewAction,
   ProductUpdateAction,
 } from "../actions";
-import { ProductType, Reviews } from "../types/ProductType";
+import { ProductType, ReviewType } from "../types/ProductType";
 
 export interface ProductListState {
   loading: Boolean;
@@ -31,6 +32,12 @@ export interface ProductUpdateState {
   loading?: Boolean;
   updated?: Boolean;
   product?: ProductType;
+  error?: string;
+}
+
+export interface ProductReviewState {
+  loading?: Boolean;
+  reviewed?: Boolean;
   error?: string;
 }
 
@@ -59,7 +66,7 @@ export const productListReducer = (
 export const productDetailsReducer = (
   state: ProductDetailState = {
     loading: false,
-    product: { reviews: [] as Reviews[] } as ProductType,
+    product: { reviews: [] as ReviewType[] } as ProductType,
   },
   action: ProductDetailAction
 ): ProductDetailState => {
@@ -74,7 +81,7 @@ export const productDetailsReducer = (
     case ActionTypes.PRODUCT_DETAILS_FAIL:
       return {
         loading: false,
-        product: { reviews: [] as Reviews[] } as ProductType,
+        product: { reviews: [] as ReviewType[] } as ProductType,
         error: action.payload,
       };
     default:
@@ -112,7 +119,7 @@ export const productCreateReducer = (
   state: ProductCreateState = {
     loading: false,
     created: false,
-    product: { reviews: [] as Reviews[] } as ProductType,
+    product: { reviews: [] as ReviewType[] } as ProductType,
   },
   action: ProductCreateAction
 ): ProductCreateState => {
@@ -142,7 +149,7 @@ export const productUpdateReducer = (
   state: ProductUpdateState = {
     loading: false,
     updated: false,
-    product: { reviews: [] as Reviews[] } as ProductType,
+    product: { reviews: [] as ReviewType[] } as ProductType,
   },
   action: ProductUpdateAction
 ): ProductUpdateState => {
@@ -162,6 +169,33 @@ export const productUpdateReducer = (
         error: action.payload,
       };
     case ActionTypes.PRODUCT_UPDATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+export const productReviewCreateReducer = (
+  state: ProductReviewState = {
+    loading: false,
+    reviewed: false,
+  },
+  action: ProductReviewAction
+): ProductReviewState => {
+  switch (action.type) {
+    case ActionTypes.PRODUCT_REVIEW_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.PRODUCT_REVIEW_SUCCESS:
+      return { loading: false, reviewed: true };
+    case ActionTypes.PRODUCT_REVIEW_FAIL:
+      return {
+        loading: false,
+        reviewed: false,
+        error: action.payload,
+      };
+    case ActionTypes.PRODUCT_REVIEW_RESET:
       return {};
     default:
       return state;

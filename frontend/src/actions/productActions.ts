@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Dispatch } from "redux";
 import { ActionTypes } from "./types";
-import { ProductType } from "../types/ProductType";
+import { ProductType, ReviewType } from "../types/ProductType";
 import { StoreState } from "../store";
 
 export interface FetchProductsRequestAction {
@@ -69,6 +69,20 @@ export interface ProductUpdateFailAction {
 }
 export interface ProductUpdateResetAction {
   type: ActionTypes.PRODUCT_UPDATE_RESET;
+}
+
+export interface ProductReviewRequestAction {
+  type: ActionTypes.PRODUCT_REVIEW_REQUEST;
+}
+export interface ProductReviewSuccessAction {
+  type: ActionTypes.PRODUCT_REVIEW_SUCCESS;
+}
+export interface ProductReviewFailAction {
+  type: ActionTypes.PRODUCT_REVIEW_FAIL;
+  payload: string;
+}
+export interface ProductReviewResetAction {
+  type: ActionTypes.PRODUCT_REVIEW_RESET;
 }
 
 export const listProducts = () => async (dispatch: Dispatch) => {
@@ -213,6 +227,38 @@ export const updateProduct = (product: ProductType) => async (
   } catch (error) {
     dispatch<ProductUpdateFailAction>({
       type: ActionTypes.PRODUCT_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const createProductReview = (
+  productId: string,
+  review: ReviewType
+) => async (dispatch: Dispatch, getState: () => StoreState) => {
+  try {
+    dispatch<ProductReviewRequestAction>({
+      type: ActionTypes.PRODUCT_REVIEW_REQUEST,
+    });
+
+    const { userInfo } = getState().userLoginState;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await axios.post(`/api/products/${productId}/reviews`, review, config);
+
+    dispatch<ProductReviewSuccessAction>({
+      type: ActionTypes.PRODUCT_REVIEW_SUCCESS,
+    });
+  } catch (error) {
+    dispatch<ProductReviewFailAction>({
+      type: ActionTypes.PRODUCT_REVIEW_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

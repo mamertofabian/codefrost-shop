@@ -1,7 +1,9 @@
-export interface Reviews {
-  name: string;
+export interface ReviewType {
+  _id?: string;
+  name?: string;
   rating: number;
   comment: string;
+  createdAt?: string;
 }
 
 export interface ProductType {
@@ -15,5 +17,5 @@ export interface ProductType {
   countInStock: number;
   rating: number;
   numReviews: number;
-  reviews: Reviews[];
+  reviews: ReviewType[];
 }

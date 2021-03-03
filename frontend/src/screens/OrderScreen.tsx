@@ -89,7 +89,7 @@ const OrderScreen = ({ match, history }: RouteComponentProps<MatchParams>) => {
         setSdkReady(true);
       }
     }
-  }, [order, dispatch, orderId, successPay, successDeliver, userInfo]);
+  }, [order, dispatch, history, orderId, successPay, successDeliver, userInfo]);
 
   const successPaymentHandler = (paymentResult: PaymentResultType) => {
     console.log(paymentResult);
