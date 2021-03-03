@@ -60,6 +60,18 @@ export interface UserOrdersResetAction {
   type: ActionTypes.USER_ORDERS_RESET;
 }
 
+export interface OrderListRequestAction {
+  type: ActionTypes.ORDER_LIST_REQUEST;
+}
+export interface OrderListSuccessAction {
+  type: ActionTypes.ORDER_LIST_SUCCESS;
+  payload: OrderType[];
+}
+export interface OrderListFailAction {
+  type: ActionTypes.ORDER_LIST_FAIL;
+  payload: string;
+}
+
 export const createOrder = (order: OrderType) => async (
   dispatch: Dispatch,
   getState: () => StoreState
@@ -194,6 +206,39 @@ export const getUserOrders = () => async (
   } catch (error) {
     dispatch<UserOrdersFailAction>({
       type: ActionTypes.USER_ORDERS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listOrders = () => async (
+  dispatch: Dispatch,
+  getState: () => StoreState
+) => {
+  try {
+    dispatch<OrderListRequestAction>({
+      type: ActionTypes.ORDER_LIST_REQUEST,
+    });
+
+    const { userInfo } = getState().userLoginState;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.get<OrderType[]>(`/api/orders`, config);
+
+    dispatch<OrderListSuccessAction>({
+      type: ActionTypes.ORDER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch<OrderListFailAction>({
+      type: ActionTypes.ORDER_LIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

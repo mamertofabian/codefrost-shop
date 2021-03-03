@@ -35,6 +35,7 @@ import {
   OrderCreateState,
   orderDetailReducer,
   OrderDetailsState,
+  orderListReducer,
   orderPayReducer,
   OrderPayState,
   userOrdersReducer,
@@ -59,6 +60,7 @@ export interface StoreState {
   orderDetailState: OrderDetailsState;
   orderPayState: OrderPayState;
   userOrdersState: UserOrdersState;
+  orderListState: UserOrdersState;
 }
 
 const reducer = combineReducers<StoreState>({
@@ -79,6 +81,7 @@ const reducer = combineReducers<StoreState>({
   orderDetailState: orderDetailReducer,
   orderPayState: orderPayReducer,
   userOrdersState: userOrdersReducer,
+  orderListState: orderListReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem("cartItems");
@@ -127,6 +130,7 @@ const initialState: StoreState = {
   orderDetailState: {} as OrderDetailsState,
   orderPayState: {} as OrderPayState,
   userOrdersState: {} as UserOrdersState,
+  orderListState: {} as UserOrdersState,
 };
 const middleware = [thunk];
 

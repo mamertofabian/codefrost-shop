@@ -5,8 +5,15 @@ import Order from "../models/orderModel.js";
 // @route   POST /api/orders
 // @access  Private
 const addOrderItems = asyncHandler(async (req, res) => {
-  const { orderItems, shippingAddress, paymentMethod, orderSummary } = req.body;
-  const { itemsPrice, taxPrice, shippingPrice, totalPrice } = orderSummary;
+  const {
+    orderItems,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+  } = req.body;
 
   if (orderItems && orderItems.length === 0) {
     res.status(400);
@@ -77,4 +84,18 @@ const getUserOrders = asyncHandler(async (req, res) => {
   res.json(orders);
 });
 
-export { addOrderItems, getOrderById, getUserOrders, updateOrderToPaid };
+// @desc    Get all orders
+// @route   GET /api/orders
+// @access  Private/Admin
+const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find().populate("user", "_id name");
+  res.json(orders);
+});
+
+export {
+  addOrderItems,
+  getOrderById,
+  getUserOrders,
+  updateOrderToPaid,
+  getAllOrders,
+};

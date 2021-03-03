@@ -2,6 +2,7 @@ import {
   ActionTypes,
   OrderCreateAction,
   OrderDetailsAction,
+  OrderListAction,
   OrderPayAction,
   UserOrdersAction,
 } from "../actions";
@@ -138,6 +139,31 @@ export const userOrdersReducer = (
       };
     case ActionTypes.USER_ORDERS_RESET:
       return { orders: [] as OrderType[], loading: false };
+    default:
+      return state;
+  }
+};
+
+export const orderListReducer = (
+  state = { orders: [] as OrderType[], loading: false },
+  action: OrderListAction
+): UserOrdersState => {
+  switch (action.type) {
+    case ActionTypes.ORDER_LIST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.ORDER_LIST_SUCCESS:
+      return {
+        loading: false,
+        orders: action.payload,
+      };
+    case ActionTypes.ORDER_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }
