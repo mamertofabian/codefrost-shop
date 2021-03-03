@@ -51,6 +51,10 @@ import {
   UserDeleteRequestAction,
   UserDeleteSuccessAction,
   UserDeleteFailAction,
+  UserUpdateRequestAction,
+  UserUpdateSuccessAction,
+  UserUpdateFailAction,
+  UserUpdateResetAction,
 } from "./userActions";
 
 export enum ActionTypes {
@@ -77,6 +81,10 @@ export enum ActionTypes {
   USER_LIST_SUCCESS = "USER_LIST_SUCCESS",
   USER_LIST_FAIL = "USER_LIST_FAIL",
   USER_LIST_RESET = "USER_LIST_RESET",
+  USER_UPDATE_REQUEST = "USER_UPDATE_REQUEST",
+  USER_UPDATE_SUCCESS = "USER_UPDATE_SUCCESS",
+  USER_UPDATE_FAIL = "USER_UPDATE_FAIL",
+  USER_UPDATE_RESET = "USER_UPDATE_RESET",
   USER_DELETE_REQUEST = "USER_DELETE_REQUEST",
   USER_DELETE_SUCCESS = "USER_DELETE_SUCCESS",
   USER_DELETE_FAIL = "USER_DELETE_FAIL",
@@ -168,6 +176,12 @@ export type UserListAction =
   | UserListSuccessAction
   | UserListFailAction
   | UserListResetAction;
+
+export type UserUpdateAction =
+  | UserUpdateRequestAction
+  | UserUpdateSuccessAction
+  | UserUpdateFailAction
+  | UserUpdateResetAction;
 
 export type UserDeleteAction =
   | UserDeleteRequestAction

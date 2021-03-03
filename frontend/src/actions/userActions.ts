@@ -65,6 +65,21 @@ export interface UserListResetAction {
   type: ActionTypes.USER_LIST_RESET;
 }
 
+export interface UserUpdateRequestAction {
+  type: ActionTypes.USER_UPDATE_REQUEST;
+}
+export interface UserUpdateSuccessAction {
+  type: ActionTypes.USER_UPDATE_SUCCESS;
+  payload: UserType;
+}
+export interface UserUpdateFailAction {
+  type: ActionTypes.USER_UPDATE_FAIL;
+  payload: string;
+}
+export interface UserUpdateResetAction {
+  type: ActionTypes.USER_UPDATE_RESET;
+}
+
 export interface UserDeleteRequestAction {
   type: ActionTypes.USER_DELETE_REQUEST;
 }
@@ -312,6 +327,49 @@ export const deleteUser = (userId: string) => async (
   } catch (error) {
     dispatch<UserDeleteFailAction>({
       type: ActionTypes.USER_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUser = (user: UserType) => async (
+  dispatch: Dispatch,
+  getState: () => StoreState
+) => {
+  try {
+    dispatch<UserUpdateRequestAction>({
+      type: ActionTypes.USER_UPDATE_REQUEST,
+    });
+
+    const { userInfo } = getState().userLoginState;
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put<UserType>(
+      `/api/users/${user._id}`,
+      user,
+      config
+    );
+
+    dispatch<UserUpdateSuccessAction>({
+      type: ActionTypes.USER_UPDATE_SUCCESS,
+      payload: data,
+    });
+
+    dispatch<UserDetailsSuccessAction>({
+      type: ActionTypes.USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch<UserUpdateFailAction>({
+      type: ActionTypes.USER_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

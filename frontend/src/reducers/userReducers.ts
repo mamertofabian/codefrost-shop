@@ -5,6 +5,7 @@ import {
   UserListAction,
   UserLoginAction,
   UserRegisterAction,
+  UserUpdateAction,
   UserUpdateProfileAction,
 } from "../actions";
 import { UserType } from "../types/UserType";
@@ -165,6 +166,37 @@ export const userDeleteReducer = (
         deleted: false,
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userUpdateReducer = (
+  state: UserUpdateState = {
+    loading: false,
+    success: false,
+    userInfo: {} as UserType,
+  },
+  action: UserUpdateAction
+): UserUpdateState => {
+  switch (action.type) {
+    case ActionTypes.USER_UPDATE_REQUEST:
+      return { ...state, loading: true };
+    case ActionTypes.USER_UPDATE_SUCCESS:
+      return { loading: false, success: true, userInfo: action.payload };
+    case ActionTypes.USER_UPDATE_FAIL:
+      return {
+        userInfo: {} as UserType,
+        loading: false,
+        success: false,
+        error: action.payload,
+      };
+    case ActionTypes.USER_UPDATE_RESET:
+      return {
+        userInfo: {} as UserType,
+        loading: false,
+        success: false,
       };
     default:
       return state;

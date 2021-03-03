@@ -5,15 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
-import { getUserDetails } from "../actions/userActions";
+import { getUserDetails, updateUser } from "../actions/userActions";
 import { StoreState } from "../store";
-import { UserInfoState } from "../reducers/userReducers";
+import { UserInfoState, UserUpdateState } from "../reducers/userReducers";
+import { ActionTypes } from "../actions";
 
 interface MatchParams {
   id: string;
 }
 
-const UserEditScreen = ({ match }: RouteComponentProps<MatchParams>) => {
+const UserEditScreen = ({
+  match,
+  history,
+}: RouteComponentProps<MatchParams>) => {
   const userId = match.params.id;
 
   const [name, setName] = useState("");
@@ -27,18 +31,35 @@ const UserEditScreen = ({ match }: RouteComponentProps<MatchParams>) => {
   );
   const { userInfo, loading, error } = userDetailState;
 
+  const userUpdateState = useSelector<StoreState, UserUpdateState>(
+    (state) => state.userUpdateState
+  );
+  const {
+    loading: loadingUpdate,
+    success: successUpdate,
+    error: errorUpdate,
+  } = userUpdateState;
+
   useEffect(() => {
-    if (userInfo && userInfo.name && userInfo._id === userId) {
-      setName(userInfo.name);
-      setEmail(userInfo.email);
-      setIsAdmin(userInfo.isAdmin);
-    } else if (!loading) {
-      dispatch(getUserDetails(userId));
+    if (successUpdate) {
+      dispatch({ type: ActionTypes.USER_UPDATE_RESET });
+      history.push("/admin/userlist");
+    } else {
+      if (userInfo && userInfo.name && userInfo._id === userId) {
+        setName(userInfo.name);
+        setEmail(userInfo.email);
+        setIsAdmin(userInfo.isAdmin);
+      } else if (!loading) {
+        dispatch(getUserDetails(userId));
+      }
     }
-  }, [dispatch, userId, userInfo, loading]);
+  }, [dispatch, history, userId, userInfo, loading, successUpdate]);
 
   const submitHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(
+      updateUser({ _id: userId, name, email, isAdmin, password: "", token: "" })
+    );
   };
 
   return (
@@ -48,6 +69,12 @@ const UserEditScreen = ({ match }: RouteComponentProps<MatchParams>) => {
       </Link>
       <FormContainer>
         <h1>Edit User</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate ? (
+          <Message variant="danger">{errorUpdate}</Message>
+        ) : (
+          <span></span>
+        )}
         {loading ? (
           <Loader />
         ) : error ? (
