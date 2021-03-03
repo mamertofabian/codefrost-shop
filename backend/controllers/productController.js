@@ -101,7 +101,7 @@ const createReview = asyncHandler(async (req, res) => {
 
   if (product) {
     const alreadyReviewed = product.reviews.find(
-      (r) => r.user.toString() === req._id.toString()
+      (r) => r.user.toString() === req.user._id.toString()
     );
     if (alreadyReviewed) {
       res.status(400);
