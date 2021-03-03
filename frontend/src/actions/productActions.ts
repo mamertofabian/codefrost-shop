@@ -41,6 +41,21 @@ export interface ProductDeleteFailAction {
   payload: string;
 }
 
+export interface ProductCreateRequestAction {
+  type: ActionTypes.PRODUCT_CREATE_REQUEST;
+}
+export interface ProductCreateSuccessAction {
+  type: ActionTypes.PRODUCT_CREATE_SUCCESS;
+  payload: ProductType;
+}
+export interface ProductCreateFailAction {
+  type: ActionTypes.PRODUCT_CREATE_FAIL;
+  payload: string;
+}
+export interface ProductCreateResetAction {
+  type: ActionTypes.PRODUCT_CREATE_RESET;
+}
+
 export const listProducts = () => async (dispatch: Dispatch) => {
   try {
     dispatch<FetchProductsRequestAction>({
@@ -101,7 +116,6 @@ export const deleteProduct = (productId: string) => async (
     });
 
     const { userInfo } = getState().userLoginState;
-
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
@@ -115,6 +129,38 @@ export const deleteProduct = (productId: string) => async (
   } catch (error) {
     dispatch<ProductDeleteFailAction>({
       type: ActionTypes.PRODUCT_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const createProduct = () => async (
+  dispatch: Dispatch,
+  getState: () => StoreState
+) => {
+  try {
+    dispatch<ProductCreateRequestAction>({
+      type: ActionTypes.PRODUCT_CREATE_REQUEST,
+    });
+
+    const { userInfo } = getState().userLoginState;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.post<ProductType>(`/api/products`, {}, config);
+
+    dispatch<ProductCreateSuccessAction>({
+      type: ActionTypes.PRODUCT_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch<ProductCreateFailAction>({
+      type: ActionTypes.PRODUCT_CREATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

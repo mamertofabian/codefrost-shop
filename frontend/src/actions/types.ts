@@ -30,6 +30,10 @@ import {
   ProductDeleteRequestAction,
   ProductDeleteSuccessAction,
   ProductDeleteFailAction,
+  ProductCreateResetAction,
+  ProductCreateSuccessAction,
+  ProductCreateFailAction,
+  ProductCreateRequestAction,
 } from "./productActions";
 import {
   UserDetailsFailAction,
@@ -70,6 +74,10 @@ export enum ActionTypes {
   PRODUCT_DELETE_REQUEST = "PRODUCT_DELETE_REQUEST",
   PRODUCT_DELETE_SUCCESS = "PRODUCT_DELETE_SUCCESS",
   PRODUCT_DELETE_FAIL = "PRODUCT_DELETE_FAIL",
+  PRODUCT_CREATE_REQUEST = "PRODUCT_CREATE_REQUEST",
+  PRODUCT_CREATE_SUCCESS = "PRODUCT_CREATE_SUCCESS",
+  PRODUCT_CREATE_FAIL = "PRODUCT_CREATE_FAIL",
+  PRODUCT_CREATE_RESET = "PRODUCT_CREATE_RESET",
   CART_ADD_ITEM = "CART_ADD_ITEM",
   CART_REMOVE_ITEM = "CART_REMOVE_ITEM",
   USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST",
@@ -130,6 +138,12 @@ export type ProductDeleteAction =
   | ProductDeleteRequestAction
   | ProductDeleteSuccessAction
   | ProductDeleteFailAction;
+
+export type ProductCreateAction =
+  | ProductCreateRequestAction
+  | ProductCreateSuccessAction
+  | ProductCreateFailAction
+  | ProductCreateResetAction;
 
 export type UserRegisterAction =
   | UserRegisterRequestAction

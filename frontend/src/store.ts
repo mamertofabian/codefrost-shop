@@ -2,6 +2,8 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
+  productCreateReducer,
+  ProductCreateState,
   productDeleteReducer,
   ProductDeleteState,
   productDetailsReducer,
@@ -40,6 +42,7 @@ import {
 export interface StoreState {
   productListState: ProductListState;
   productDetailState: ProductDetailState;
+  productCreateState: ProductCreateState;
   productDeleteState: ProductDeleteState;
   cartState: CartState;
   userLoginState: UserInfoState;
@@ -58,6 +61,7 @@ export interface StoreState {
 const reducer = combineReducers<StoreState>({
   productListState: productListReducer,
   productDetailState: productDetailsReducer,
+  productCreateState: productCreateReducer,
   productDeleteState: productDeleteReducer,
   cartState: cartReducer,
   userLoginState: userLoginReducer,
@@ -103,8 +107,9 @@ const userInfo: UserType = userInfoFromStorage
 
 const initialState: StoreState = {
   cartState: cartStateFromStorage,
-  productDetailState: {} as ProductDetailState,
   productListState: {} as ProductListState,
+  productDetailState: {} as ProductDetailState,
+  productCreateState: {} as ProductCreateState,
   productDeleteState: {} as ProductDeleteState,
   userLoginState: { userInfo, loading: false },
   userRegisterState: {} as UserInfoState,

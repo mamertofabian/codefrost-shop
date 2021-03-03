@@ -5,13 +5,19 @@ import { RouteComponentProps } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { deleteProduct, listProducts } from "../actions/productActions";
+import {
+  createProduct,
+  deleteProduct,
+  listProducts,
+} from "../actions/productActions";
 import { StoreState } from "../store";
 import { UserInfoState } from "../reducers/userReducers";
 import {
+  ProductCreateState,
   ProductDeleteState,
   ProductListState,
 } from "../reducers/productReducers";
+import { ActionTypes } from "../actions/types";
 
 interface MatchParams {
   id: string;
@@ -37,18 +43,34 @@ const ProductListScreen = ({
     error: deleteError,
   } = productDeleteState;
 
+  const productCreateState = useSelector<StoreState, ProductCreateState>(
+    (state) => state.productCreateState
+  );
+  const {
+    created,
+    product: createdProduct,
+    loading: createLoading,
+    error: createError,
+  } = productCreateState;
+
   const userLoginState = useSelector<StoreState, UserInfoState>(
     (state) => state.userLoginState
   );
   const { userInfo } = userLoginState;
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listProducts());
-    } else {
+    dispatch({ type: ActionTypes.PRODUCT_CREATE_RESET });
+
+    if (!userInfo || !userInfo.isAdmin) {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo, deleted]);
+
+    if (created && createdProduct) {
+      history.push(`/admin/product/${createdProduct._id}/edit`);
+    } else {
+      dispatch(listProducts());
+    }
+  }, [created, createdProduct, dispatch, history, userInfo, deleted]);
 
   const deleteHandler = (userId: string) => {
     if (window.confirm("Are you sure?")) {
@@ -56,7 +78,9 @@ const ProductListScreen = ({
     }
   };
 
-  const createProductHandler = () => {};
+  const createProductHandler = () => {
+    dispatch(createProduct());
+  };
 
   return (
     <Fragment>
@@ -72,6 +96,8 @@ const ProductListScreen = ({
       </Row>
       {deleteLoading && <Loader />}
       {deleteError && <Message variant="danger">{deleteError}</Message>}
+      {createLoading && <Loader />}
+      {createError && <Message variant="danger">{createError}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (

@@ -1,5 +1,6 @@
 import {
   ActionTypes,
+  ProductCreateAction,
   ProductDeleteAction,
   ProductDetailAction,
   ProductListAction,
@@ -15,6 +16,13 @@ export interface ProductListState {
 export interface ProductDetailState {
   loading: Boolean;
   product: ProductType;
+  error?: string;
+}
+
+export interface ProductCreateState {
+  loading?: Boolean;
+  created?: Boolean;
+  product?: ProductType;
   error?: string;
 }
 
@@ -87,6 +95,36 @@ export const productDeleteReducer = (
         deleted: false,
         error: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+export const productCreateReducer = (
+  state: ProductCreateState = {
+    loading: false,
+    created: false,
+    product: { reviews: [] as Reviews[] } as ProductType,
+  },
+  action: ProductCreateAction
+): ProductCreateState => {
+  switch (action.type) {
+    case ActionTypes.PRODUCT_CREATE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.PRODUCT_CREATE_SUCCESS:
+      return { loading: false, created: true, product: action.payload };
+    case ActionTypes.PRODUCT_CREATE_FAIL:
+      return {
+        loading: false,
+        created: false,
+        product: {} as ProductType,
+        error: action.payload,
+      };
+    case ActionTypes.PRODUCT_CREATE_RESET:
+      return {};
     default:
       return state;
   }
