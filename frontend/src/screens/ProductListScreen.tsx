@@ -5,14 +5,13 @@ import { RouteComponentProps } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { listProducts } from "../actions/productActions";
+import { deleteProduct, listProducts } from "../actions/productActions";
 import { StoreState } from "../store";
+import { UserInfoState } from "../reducers/userReducers";
 import {
-  UserDeleteState,
-  UserInfoState,
-  UserListState,
-} from "../reducers/userReducers";
-import { ProductListState } from "../reducers/productReducers";
+  ProductDeleteState,
+  ProductListState,
+} from "../reducers/productReducers";
 
 interface MatchParams {
   id: string;
@@ -29,6 +28,15 @@ const ProductListScreen = ({
   );
   const { products, loading, error } = productListState;
 
+  const productDeleteState = useSelector<StoreState, ProductDeleteState>(
+    (state) => state.productDeleteState
+  );
+  const {
+    deleted,
+    loading: deleteLoading,
+    error: deleteError,
+  } = productDeleteState;
+
   const userLoginState = useSelector<StoreState, UserInfoState>(
     (state) => state.userLoginState
   );
@@ -40,11 +48,11 @@ const ProductListScreen = ({
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo]);
+  }, [dispatch, history, userInfo, deleted]);
 
   const deleteHandler = (userId: string) => {
     if (window.confirm("Are you sure?")) {
-      // DELETE PRODUCTS
+      dispatch(deleteProduct(userId));
     }
   };
 
@@ -62,6 +70,8 @@ const ProductListScreen = ({
           </Button>
         </Col>
       </Row>
+      {deleteLoading && <Loader />}
+      {deleteError && <Message variant="danger">{deleteError}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (

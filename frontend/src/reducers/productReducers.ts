@@ -1,5 +1,6 @@
 import {
   ActionTypes,
+  ProductDeleteAction,
   ProductDetailAction,
   ProductListAction,
 } from "../actions";
@@ -14,6 +15,12 @@ export interface ProductListState {
 export interface ProductDetailState {
   loading: Boolean;
   product: ProductType;
+  error?: string;
+}
+
+export interface ProductDeleteState {
+  loading: boolean;
+  deleted: boolean;
   error?: string;
 }
 
@@ -52,6 +59,32 @@ export const productDetailsReducer = (
       return {
         loading: false,
         product: { reviews: [] as Reviews[] } as ProductType,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const productDeleteReducer = (
+  state: ProductDeleteState = {
+    loading: false,
+    deleted: false,
+  },
+  action: ProductDeleteAction
+): ProductDeleteState => {
+  switch (action.type) {
+    case ActionTypes.PRODUCT_DELETE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.PRODUCT_DELETE_SUCCESS:
+      return { loading: false, deleted: true };
+    case ActionTypes.PRODUCT_DELETE_FAIL:
+      return {
+        loading: false,
+        deleted: false,
         error: action.payload,
       };
     default:
