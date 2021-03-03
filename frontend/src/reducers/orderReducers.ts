@@ -1,6 +1,7 @@
 import {
   ActionTypes,
   OrderCreateAction,
+  OrderDeliverAction,
   OrderDetailsAction,
   OrderListAction,
   OrderPayAction,
@@ -24,6 +25,13 @@ export interface OrderDetailsState {
 }
 
 export interface OrderPayState {
+  order: OrderType;
+  success: boolean;
+  loading: boolean;
+  error?: string;
+}
+
+export interface OrderDeliverState {
   order: OrderType;
   success: boolean;
   loading: boolean;
@@ -112,6 +120,34 @@ export const orderPayReducer = (
     case ActionTypes.ORDER_PAY_RESET:
       return { order: {} as OrderType, loading: false, success: false };
 
+    default:
+      return state;
+  }
+};
+
+export const orderDeliverReducer = (
+  state = { order: {} as OrderType, loading: false, success: false },
+  action: OrderDeliverAction
+): OrderDeliverState => {
+  switch (action.type) {
+    case ActionTypes.ORDER_DELIVER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.ORDER_DELIVER_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        order: action.payload,
+      };
+    case ActionTypes.ORDER_DELIVER_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case ActionTypes.ORDER_DELIVER_RESET:
+      return { order: {} as OrderType, loading: false, success: false };
     default:
       return state;
   }

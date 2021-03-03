@@ -33,6 +33,8 @@ import { AddressType } from "./types/AddressType";
 import {
   orderCreateReducer,
   OrderCreateState,
+  orderDeliverReducer,
+  OrderDeliverState,
   orderDetailReducer,
   OrderDetailsState,
   orderListReducer,
@@ -59,6 +61,7 @@ export interface StoreState {
   orderCreateState: OrderCreateState;
   orderDetailState: OrderDetailsState;
   orderPayState: OrderPayState;
+  orderDeliverState: OrderDeliverState;
   userOrdersState: UserOrdersState;
   orderListState: UserOrdersState;
 }
@@ -80,6 +83,7 @@ const reducer = combineReducers<StoreState>({
   orderCreateState: orderCreateReducer,
   orderDetailState: orderDetailReducer,
   orderPayState: orderPayReducer,
+  orderDeliverState: orderDeliverReducer,
   userOrdersState: userOrdersReducer,
   orderListState: orderListReducer,
 });
@@ -129,6 +133,7 @@ const initialState: StoreState = {
   orderCreateState: {} as OrderCreateState,
   orderDetailState: {} as OrderDetailsState,
   orderPayState: {} as OrderPayState,
+  orderDeliverState: {} as OrderDeliverState,
   userOrdersState: {} as UserOrdersState,
   orderListState: {} as UserOrdersState,
 };

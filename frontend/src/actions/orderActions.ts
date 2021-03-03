@@ -45,6 +45,22 @@ export interface OrderPayResetAction {
   type: ActionTypes.ORDER_PAY_RESET;
 }
 
+export interface OrderDeliverRequestAction {
+  type: ActionTypes.ORDER_DELIVER_REQUEST;
+}
+export interface OrderDeliverSuccessAction {
+  type: ActionTypes.ORDER_DELIVER_SUCCESS;
+  payload: OrderType;
+}
+export interface OrderDeliverFailAction {
+  type: ActionTypes.ORDER_DELIVER_FAIL;
+  payload: string;
+}
+export interface OrderDeliverResetAction {
+  type: ActionTypes.ORDER_DELIVER_RESET;
+  payload: string;
+}
+
 export interface UserOrdersRequestAction {
   type: ActionTypes.USER_ORDERS_REQUEST;
 }
@@ -141,7 +157,7 @@ export const getOrderDetails = (id: string) => async (
 };
 
 export const payOrder = (
-  id: string,
+  orderId: string,
   paymentResult: PaymentResultType
 ) => async (dispatch: Dispatch, getState: () => StoreState) => {
   try {
@@ -158,7 +174,7 @@ export const payOrder = (
       },
     };
     const { data } = await axios.put<OrderType>(
-      `/api/orders/${id}/pay`,
+      `/api/orders/${orderId}/pay`,
       paymentResult,
       config
     );
@@ -170,6 +186,43 @@ export const payOrder = (
   } catch (error) {
     dispatch<OrderPayFailAction>({
       type: ActionTypes.ORDER_PAY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deliverOrder = (orderId: string) => async (
+  dispatch: Dispatch,
+  getState: () => StoreState
+) => {
+  try {
+    dispatch<OrderDeliverRequestAction>({
+      type: ActionTypes.ORDER_DELIVER_REQUEST,
+    });
+
+    const { userInfo } = getState().userLoginState;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put<OrderType>(
+      `/api/orders/${orderId}/deliver`,
+      {},
+      config
+    );
+
+    dispatch<OrderDeliverSuccessAction>({
+      type: ActionTypes.ORDER_DELIVER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch<OrderDeliverFailAction>({
+      type: ActionTypes.ORDER_DELIVER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

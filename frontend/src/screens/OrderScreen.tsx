@@ -2,15 +2,24 @@ import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { PayPalButton } from "react-paypal-button-v2";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import { StoreState } from "../store";
-import { getOrderDetails, payOrder } from "../actions/orderActions";
-import { OrderDetailsState, OrderPayState } from "../reducers/orderReducers";
+import {
+  getOrderDetails,
+  payOrder,
+  deliverOrder,
+} from "../actions/orderActions";
+import {
+  OrderDeliverState,
+  OrderDetailsState,
+  OrderPayState,
+} from "../reducers/orderReducers";
 import Loader from "../components/Loader";
 import { PaymentResultType } from "../types/PaymentResultType";
 import { ActionTypes } from "../actions";
+import { UserInfoState } from "../reducers/userReducers";
 
 declare global {
   interface Window {
@@ -22,7 +31,7 @@ interface MatchParams {
   id: string;
 }
 
-const OrderScreen = ({ match }: RouteComponentProps<MatchParams>) => {
+const OrderScreen = ({ match, history }: RouteComponentProps<MatchParams>) => {
   const orderId = match.params.id;
 
   const [sdkReady, setSdkReady] = useState(false);
@@ -39,7 +48,24 @@ const OrderScreen = ({ match }: RouteComponentProps<MatchParams>) => {
   );
   const { success: successPay, loading: loadingPay } = orderPayState;
 
+  const orderDeliverState = useSelector<StoreState, OrderDeliverState>(
+    (state) => state.orderDeliverState
+  );
+  const {
+    success: successDeliver,
+    loading: loadingDeliver,
+  } = orderDeliverState;
+
+  const userLoginState = useSelector<StoreState, UserInfoState>(
+    (state) => state.userLoginState
+  );
+  const { userInfo } = userLoginState;
+
   useEffect(() => {
+    if (!userInfo || !userInfo.email) {
+      history.push("/login");
+    }
+
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get("/api/config/paypal");
       const script = document.createElement("script");
@@ -52,8 +78,9 @@ const OrderScreen = ({ match }: RouteComponentProps<MatchParams>) => {
       document.body.appendChild(script);
     };
 
-    if (!order || successPay) {
+    if (!order || successPay || successDeliver) {
       dispatch({ type: ActionTypes.ORDER_PAY_RESET });
+      dispatch({ type: ActionTypes.ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -62,11 +89,17 @@ const OrderScreen = ({ match }: RouteComponentProps<MatchParams>) => {
         setSdkReady(true);
       }
     }
-  }, [order, dispatch, orderId, successPay]);
+  }, [order, dispatch, orderId, successPay, successDeliver, userInfo]);
 
   const successPaymentHandler = (paymentResult: PaymentResultType) => {
     console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
+  };
+
+  const deliverHandler = () => {
+    if (order && order._id) {
+      dispatch(deliverOrder(order._id));
+    }
   };
 
   return loading || !order || !order._id ? (
@@ -195,6 +228,21 @@ const OrderScreen = ({ match }: RouteComponentProps<MatchParams>) => {
                   )}
                 </ListGroup.Item>
               )}
+              {loadingDeliver && <Loader />}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroup.Item>
+                    <Button
+                      type="button"
+                      className="btn btn-block"
+                      onClick={deliverHandler}
+                    >
+                      Mark as Delivered
+                    </Button>
+                  </ListGroup.Item>
+                )}
             </ListGroup>
           </Card>
         </Col>

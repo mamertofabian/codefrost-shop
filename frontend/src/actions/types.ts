@@ -22,6 +22,10 @@ import {
   OrderListRequestAction,
   OrderListSuccessAction,
   OrderListFailAction,
+  OrderDeliverRequestAction,
+  OrderDeliverSuccessAction,
+  OrderDeliverFailAction,
+  OrderDeliverResetAction,
 } from "./orderActions";
 import {
   FetchProductsRequestAction,
@@ -129,6 +133,10 @@ export enum ActionTypes {
   ORDER_PAY_SUCCESS = "ORDER_PAY_SUCCESS",
   ORDER_PAY_FAIL = "ORDER_PAY_FAIL",
   ORDER_PAY_RESET = "ORDER_PAY_RESET",
+  ORDER_DELIVER_REQUEST = "ORDER_DELIVER_REQUEST",
+  ORDER_DELIVER_SUCCESS = "ORDER_DELIVER_SUCCESS",
+  ORDER_DELIVER_FAIL = "ORDER_PAY_FAIL",
+  ORDER_DELIVER_RESET = "ORDER_PAY_RESET",
   USER_ORDERS_REQUEST = "USER_ORDERS_REQUEST",
   USER_ORDERS_SUCCESS = "USER_ORDERS_SUCCESS",
   USER_ORDERS_FAIL = "USER_ORDERS_FAIL",
@@ -209,6 +217,12 @@ export type OrderPayAction =
   | OrderPaySuccessAction
   | OrderPayFailAction
   | OrderPayResetAction;
+
+export type OrderDeliverAction =
+  | OrderDeliverRequestAction
+  | OrderDeliverSuccessAction
+  | OrderDeliverFailAction
+  | OrderDeliverResetAction;
 
 export type UserOrdersAction =
   | UserOrdersRequestAction
