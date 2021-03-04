@@ -10,6 +10,7 @@ import { StoreState } from "../store";
 import { UserInfoState, UserUpdateState } from "../reducers/userReducers";
 import { UserOrdersState } from "../reducers/orderReducers";
 import { getUserOrders } from "../actions/orderActions";
+import { ActionTypes } from "../actions/types";
 
 const ProfileScreen = ({ history }: RouteComponentProps) => {
   const [name, setName] = useState("");
@@ -46,7 +47,8 @@ const ProfileScreen = ({ history }: RouteComponentProps) => {
 
   useEffect(() => {
     if (userLoginInfo && userLoginInfo.email) {
-      if ((!userInfo || !userInfo.name) && !loading) {
+      if ((!userInfo || !userInfo.name || success) && !loading) {
+        dispatch({ type: ActionTypes.USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
         dispatch(getUserOrders());
       } else {
@@ -56,7 +58,7 @@ const ProfileScreen = ({ history }: RouteComponentProps) => {
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, loading, userInfo, userLoginInfo]);
+  }, [dispatch, history, loading, userInfo, userLoginInfo, success]);
 
   const submitHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();

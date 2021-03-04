@@ -256,9 +256,12 @@ export const updateUserProfile = (user: UserType) => async (
       payload: data,
     });
 
-    dispatch<UserDetailsResetAction>({
-      type: ActionTypes.USER_DETAILS_RESET,
+    dispatch<UserLoginSuccessAction>({
+      type: ActionTypes.USER_LOGIN_SUCCESS,
+      payload: data,
     });
+
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch<UserUpdateProfileFailAction>({
       type: ActionTypes.USER_UPDATE_PROFILE_FAIL,
