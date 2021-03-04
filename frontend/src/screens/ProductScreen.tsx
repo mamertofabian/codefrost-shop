@@ -48,11 +48,7 @@ const ProductScreen = ({
   const productReviewState = useSelector<StoreState, ProductReviewState>(
     (state) => state.productReviewState
   );
-  const {
-    reviewed,
-    loading: reviewLoading,
-    error: reviewError,
-  } = productReviewState;
+  const { reviewed, error: reviewError } = productReviewState;
 
   const userLoginState = useSelector<StoreState, UserInfoState>(
     (state) => state.userLoginState
