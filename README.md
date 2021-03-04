@@ -11,6 +11,7 @@ This is a complete eCommerce web application developed from scratch.
 # Functionalities
 - List available products
 - Search products
+- Review products
 - Paginated product list
 - Top products carousel
 - Adding products to Cart even when not logged in
