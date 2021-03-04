@@ -1,6 +1,6 @@
 # Codefrost Shop
 
-This is a complete eCommerse web application developed from scratch.
+This is a complete eCommerce web application developed from scratch.
 
 # Technologies used
 - MERN Stack (MongoDB, ExpressJS, ReactJS, and NodeJS)
