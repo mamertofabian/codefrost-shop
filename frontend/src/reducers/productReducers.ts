@@ -5,6 +5,7 @@ import {
   ProductDetailAction,
   ProductListAction,
   ProductReviewAction,
+  ProductTopAction,
   ProductUpdateAction,
 } from "../actions";
 import { ProductListType, ProductType, ReviewType } from "../types/ProductType";
@@ -38,6 +39,12 @@ export interface ProductUpdateState {
 export interface ProductReviewState {
   loading?: Boolean;
   reviewed?: Boolean;
+  error?: string;
+}
+
+export interface ProductTopState {
+  loading: Boolean;
+  products: ProductType[];
   error?: string;
 }
 
@@ -181,6 +188,7 @@ export const productUpdateReducer = (
       return state;
   }
 };
+
 export const productReviewCreateReducer = (
   state: ProductReviewState = {
     loading: false,
@@ -204,6 +212,32 @@ export const productReviewCreateReducer = (
       };
     case ActionTypes.PRODUCT_REVIEW_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const productTopReducer = (
+  state: ProductTopState = {
+    loading: false,
+    products: [] as ProductType[],
+  },
+  action: ProductTopAction
+): ProductTopState => {
+  switch (action.type) {
+    case ActionTypes.PRODUCT_TOP_REQUEST:
+      return {
+        products: [] as ProductType[],
+        loading: true,
+      };
+    case ActionTypes.PRODUCT_TOP_SUCCESS:
+      return { loading: false, products: action.payload };
+    case ActionTypes.PRODUCT_TOP_FAIL:
+      return {
+        loading: false,
+        products: [] as ProductType[],
+        error: action.payload,
+      };
     default:
       return state;
   }

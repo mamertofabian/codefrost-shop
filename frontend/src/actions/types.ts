@@ -49,6 +49,9 @@ import {
   ProductReviewSuccessAction,
   ProductReviewFailAction,
   ProductReviewResetAction,
+  ProductTopRequestAction,
+  ProductTopSuccessAction,
+  ProductTopFailAction,
 } from "./productActions";
 import {
   UserDetailsFailAction,
@@ -101,6 +104,9 @@ export enum ActionTypes {
   PRODUCT_REVIEW_SUCCESS = "PRODUCT_REVIEW_SUCCESS",
   PRODUCT_REVIEW_FAIL = "PRODUCT_REVIEW_FAIL",
   PRODUCT_REVIEW_RESET = "PRODUCT_REVIEW_RESET",
+  PRODUCT_TOP_REQUEST = "PRODUCT_TOP_REQUEST",
+  PRODUCT_TOP_SUCCESS = "PRODUCT_TOP_SUCCESS",
+  PRODUCT_TOP_FAIL = "PRODUCT_TOP_FAIL",
   CART_ADD_ITEM = "CART_ADD_ITEM",
   CART_REMOVE_ITEM = "CART_REMOVE_ITEM",
   USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST",
@@ -186,6 +192,11 @@ export type ProductReviewAction =
   | ProductReviewSuccessAction
   | ProductReviewFailAction
   | ProductReviewResetAction;
+
+export type ProductTopAction =
+  | ProductTopRequestAction
+  | ProductTopSuccessAction
+  | ProductTopFailAction;
 
 export type UserRegisterAction =
   | UserRegisterRequestAction

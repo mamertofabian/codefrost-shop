@@ -85,6 +85,18 @@ export interface ProductReviewResetAction {
   type: ActionTypes.PRODUCT_REVIEW_RESET;
 }
 
+export interface ProductTopRequestAction {
+  type: ActionTypes.PRODUCT_TOP_REQUEST;
+}
+export interface ProductTopSuccessAction {
+  type: ActionTypes.PRODUCT_TOP_SUCCESS;
+  payload: ProductType[];
+}
+export interface ProductTopFailAction {
+  type: ActionTypes.PRODUCT_TOP_FAIL;
+  payload: string;
+}
+
 export const listProducts = (
   keyword: string = "",
   pageNumber: string = ""
@@ -264,6 +276,29 @@ export const createProductReview = (
   } catch (error) {
     dispatch<ProductReviewFailAction>({
       type: ActionTypes.PRODUCT_REVIEW_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getTopProducts = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch<ProductTopRequestAction>({
+      type: ActionTypes.PRODUCT_TOP_REQUEST,
+    });
+
+    const { data } = await axios.get<ProductType[]>(`/api/products/top`);
+
+    dispatch<ProductTopSuccessAction>({
+      type: ActionTypes.PRODUCT_TOP_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch<ProductTopFailAction>({
+      type: ActionTypes.PRODUCT_TOP_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
