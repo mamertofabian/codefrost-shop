@@ -24,6 +24,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { ActionTypes } from "../actions/types";
 import { UserInfoState } from "../reducers/userReducers";
+import Meta from "../components/Meta";
 
 interface MatchParams {
   id: string;
@@ -97,6 +98,7 @@ const ProductScreen = ({
           </Message>
         ) : (
           <Fragment>
+            <Meta title={product.name} />
             <Row>
               <Col md={6}>
                 <Image src={product.image} alt={product.name} fluid />
