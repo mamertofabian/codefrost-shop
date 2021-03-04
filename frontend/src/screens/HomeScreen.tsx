@@ -7,8 +7,18 @@ import { StoreState } from "../store";
 import { ProductListState } from "../reducers/productReducers";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import { RouteComponentProps } from "react-router-dom";
 
-const HomeScreen = () => {
+interface MatchParams {
+  keyword: string;
+}
+
+const HomeScreen = ({
+  match,
+  location,
+  history,
+}: RouteComponentProps<MatchParams>) => {
+  const keyword = match.params.keyword;
   const dispatch = useDispatch();
 
   const productState = useSelector<StoreState, ProductListState>(
@@ -17,8 +27,8 @@ const HomeScreen = () => {
   const { products, loading, error } = productState;
 
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+    dispatch(listProducts(keyword));
+  }, [dispatch, keyword]);
 
   return (
     <Fragment>

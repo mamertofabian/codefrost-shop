@@ -85,14 +85,18 @@ export interface ProductReviewResetAction {
   type: ActionTypes.PRODUCT_REVIEW_RESET;
 }
 
-export const listProducts = () => async (dispatch: Dispatch) => {
+export const listProducts = (keyword: string = "") => async (
+  dispatch: Dispatch
+) => {
   try {
     dispatch<FetchProductsRequestAction>({
       type: ActionTypes.PRODUCT_LIST_REQUEST,
       payload: [],
     });
 
-    const { data } = await axios.get<ProductType[]>("/api/products");
+    const { data } = await axios.get<ProductType[]>(
+      `/api/products?keyword=${keyword}`
+    );
 
     dispatch<FetchProductsSuccessAction>({
       type: ActionTypes.PRODUCT_LIST_SUCCESS,
