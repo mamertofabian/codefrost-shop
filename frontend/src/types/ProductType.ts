@@ -19,3 +19,9 @@ export interface ProductType {
   numReviews: number;
   reviews: ReviewType[];
 }
+
+export interface ProductListType {
+  products: ProductType[];
+  page: number;
+  pages: number;
+}

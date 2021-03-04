@@ -1,16 +1,16 @@
 import axios from "axios";
 import { Dispatch } from "redux";
 import { ActionTypes } from "./types";
-import { ProductType, ReviewType } from "../types/ProductType";
+import { ProductListType, ProductType, ReviewType } from "../types/ProductType";
 import { StoreState } from "../store";
 
 export interface FetchProductsRequestAction {
   type: ActionTypes.PRODUCT_LIST_REQUEST;
-  payload: ProductType[];
+  payload: ProductListType;
 }
 export interface FetchProductsSuccessAction {
   type: ActionTypes.PRODUCT_LIST_SUCCESS;
-  payload: ProductType[];
+  payload: ProductListType;
 }
 export interface FetchProductsFailAction {
   type: ActionTypes.PRODUCT_LIST_FAIL;
@@ -85,17 +85,18 @@ export interface ProductReviewResetAction {
   type: ActionTypes.PRODUCT_REVIEW_RESET;
 }
 
-export const listProducts = (keyword: string = "") => async (
-  dispatch: Dispatch
-) => {
+export const listProducts = (
+  keyword: string = "",
+  pageNumber: string = ""
+) => async (dispatch: Dispatch) => {
   try {
     dispatch<FetchProductsRequestAction>({
       type: ActionTypes.PRODUCT_LIST_REQUEST,
-      payload: [],
+      payload: {} as ProductListType,
     });
 
-    const { data } = await axios.get<ProductType[]>(
-      `/api/products?keyword=${keyword}`
+    const { data } = await axios.get<ProductListType>(
+      `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
     );
 
     dispatch<FetchProductsSuccessAction>({

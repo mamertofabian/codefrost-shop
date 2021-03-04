@@ -7,11 +7,11 @@ import {
   ProductReviewAction,
   ProductUpdateAction,
 } from "../actions";
-import { ProductType, ReviewType } from "../types/ProductType";
+import { ProductListType, ProductType, ReviewType } from "../types/ProductType";
 
 export interface ProductListState {
   loading: Boolean;
-  products: ProductType[];
+  productList: ProductListType;
   error?: string;
 }
 
@@ -48,16 +48,23 @@ export interface ProductDeleteState {
 }
 
 export const productListReducer = (
-  state: ProductListState = { loading: false, products: [] },
+  state: ProductListState = {
+    loading: false,
+    productList: {} as ProductListType,
+  },
   action: ProductListAction
 ): ProductListState => {
   switch (action.type) {
     case ActionTypes.PRODUCT_LIST_REQUEST:
-      return { loading: true, products: action.payload };
+      return { loading: true, productList: action.payload };
     case ActionTypes.PRODUCT_LIST_SUCCESS:
-      return { loading: false, products: action.payload };
+      return { loading: false, productList: action.payload };
     case ActionTypes.PRODUCT_LIST_FAIL:
-      return { loading: false, products: [], error: action.payload };
+      return {
+        loading: false,
+        productList: {} as ProductListType,
+        error: action.payload,
+      };
     default:
       return state;
   }

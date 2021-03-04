@@ -5,6 +5,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Paginate from "../components/Paginate";
 import {
   createProduct,
   deleteProduct,
@@ -20,19 +21,24 @@ import {
 import { ActionTypes } from "../actions/types";
 
 interface MatchParams {
-  id: string;
+  keyword: string;
+  pageNumber: string;
 }
 
 const ProductListScreen = ({
   history,
   match,
 }: RouteComponentProps<MatchParams>) => {
+  // const keyword = match.params.keyword;
+  const keyword = "";
+  const pageNumber = match.params.pageNumber || "1";
+
   const dispatch = useDispatch();
 
   const productListState = useSelector<StoreState, ProductListState>(
     (state) => state.productListState
   );
-  const { products, loading, error } = productListState;
+  const { productList, loading, error } = productListState;
 
   const productDeleteState = useSelector<StoreState, ProductDeleteState>(
     (state) => state.productDeleteState
@@ -68,9 +74,18 @@ const ProductListScreen = ({
     if (created && createdProduct) {
       history.push(`/admin/product/${createdProduct._id}/edit`);
     } else {
-      dispatch(listProducts());
+      dispatch(listProducts(keyword, pageNumber));
     }
-  }, [created, createdProduct, dispatch, history, userInfo, deleted]);
+  }, [
+    created,
+    createdProduct,
+    keyword,
+    pageNumber,
+    dispatch,
+    history,
+    userInfo,
+    deleted,
+  ]);
 
   const deleteHandler = (userId: string) => {
     if (window.confirm("Are you sure?")) {
@@ -103,44 +118,52 @@ const ProductListScreen = ({
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className="table-sm">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>NAME</th>
-              <th>PRICE</th>
-              <th>CATEGORY</th>
-              <th>BRAND</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {products &&
-              products.map((product) => (
-                <tr key={product._id}>
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>${product.price}</td>
-                  <td>{product.category}</td>
-                  <td>{product.brand}</td>
-                  <td>
-                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                      <Button variant="light" className="btn-sm">
-                        <i className="fas fa-edit"></i>
+        <Fragment>
+          <Table striped bordered hover responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>CATEGORY</th>
+                <th>BRAND</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {productList &&
+                productList.products.map((product) => (
+                  <tr key={product._id}>
+                    <td>{product._id}</td>
+                    <td>{product.name}</td>
+                    <td>${product.price}</td>
+                    <td>{product.category}</td>
+                    <td>{product.brand}</td>
+                    <td>
+                      <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                        <Button variant="light" className="btn-sm">
+                          <i className="fas fa-edit"></i>
+                        </Button>
+                      </LinkContainer>
+                      <Button
+                        variant="danger"
+                        className="btn-sm"
+                        onClick={() => deleteHandler(product._id)}
+                      >
+                        <i className="fas fa-trash"></i>
                       </Button>
-                    </LinkContainer>
-                    <Button
-                      variant="danger"
-                      className="btn-sm"
-                      onClick={() => deleteHandler(product._id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+          <Paginate
+            pages={productList.pages}
+            page={productList.page}
+            isAdmin={true}
+            // keyword={keyword ? keyword : ""}
+          />
+        </Fragment>
       )}
     </Fragment>
   );
